@@ -1,0 +1,1591 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>洛谷风 OJ - 计算机科学教育新生态</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=ZCOOL+QingKe+HuangYou&family=Noto+Sans+SC:wght@400;500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --hd:#2d3c50; --hd-deep:#26334a;
+  --bg:#ecf0f5; --card:#fff;
+  --ink:#262b33; --muted:#7b8494; --line:#e3e8ef;
+  --blue:#3498db; --blue-d:#2f89c5; --blue-bg:#eaf4fc;
+  --ac:#52c41a; --ac-bg:#eaf7e4;
+  --wa:#e74c3c; --wa-bg:#fdeeec;
+  --tle:#f39c11; --tle-bg:#fdf3e3;
+  --re:#8e44ad; --re-bg:#f4ecf9;
+  /* 洛谷难度七色 */
+  --d0:#fe4c61; --d1:#f39c11; --d2:#ffc116; --d3:#52c41a; --d4:#3498db; --d5:#9d3dcf; --d6:#0e1d69;
+  --mono:"JetBrains Mono","IBM Plex Mono",Consolas,"Courier New",monospace;
+  --sans:"Noto Sans SC","PingFang SC","Microsoft YaHei",-apple-system,"Segoe UI",sans-serif;
+  --logo:"ZCOOL QingKe HuangYou","Noto Sans SC",sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:var(--sans);font-size:14px;line-height:1.7;color:var(--ink);background:var(--bg);min-height:100vh}
+a{color:var(--blue);text-decoration:none}
+a:hover{color:var(--blue-d)}
+:focus-visible{outline:2px solid var(--blue);outline-offset:2px;border-radius:4px}
+.mono{font-family:var(--mono)}
+.container{max-width:1170px;margin:0 auto;padding:18px 20px 60px}
+h1,h2,h3{margin:0}
+
+/* ---------- 顶栏 ---------- */
+.lg-header{background:linear-gradient(180deg,var(--hd) 0%,var(--hd-deep) 100%);position:sticky;top:0;z-index:50;
+  box-shadow:0 1px 4px rgba(0,0,0,.25)}
+.lg-header-inner{max-width:1170px;margin:0 auto;display:flex;align-items:center;gap:22px;height:56px;padding:0 20px}
+.lg-logo{display:flex;align-items:center;gap:9px;flex:none}
+.lg-logo:hover{text-decoration:none}
+.lg-logo-mark{width:34px;height:34px;border-radius:8px;background:linear-gradient(135deg,#41b883,#2f89c5);
+  color:#fff;font-family:var(--logo);font-size:20px;display:flex;align-items:center;justify-content:center}
+.lg-logo-text{font-family:var(--logo);font-size:24px;color:#fff;letter-spacing:2px}
+.lg-logo-sub{font-size:12px;color:rgba(255,255,255,.55);border-left:1px solid rgba(255,255,255,.2);padding-left:9px;letter-spacing:.06em}
+.lg-nav{display:flex;gap:2px}
+.lg-nav a{color:rgba(255,255,255,.78);padding:6px 14px;border-radius:6px;font-size:14.5px}
+.lg-nav a:hover{color:#fff;background:rgba(255,255,255,.12);text-decoration:none}
+.lg-nav a.active{color:#fff;background:rgba(255,255,255,.16);font-weight:700}
+.lg-search{flex:1;max-width:260px;margin-left:auto}
+.lg-search input{width:100%;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.18);border-radius:6px;
+  color:#fff;padding:6px 12px;font-size:13px;font-family:var(--sans)}
+.lg-search input::placeholder{color:rgba(255,255,255,.45)}
+.lg-search input:focus{background:rgba(255,255,255,.22);border-color:rgba(255,255,255,.4);outline:none}
+.lg-user{display:flex;align-items:center;gap:10px;color:#fff;font-size:13.5px}
+.lg-user .btn-login,.lg-user .btn-logout{color:rgba(255,255,255,.85);border:1px solid rgba(255,255,255,.3);
+  border-radius:6px;padding:4px 12px;background:transparent;cursor:pointer;font-size:13px;font-family:var(--sans)}
+.lg-user .btn-login:hover,.lg-user .btn-logout:hover{background:rgba(255,255,255,.14);color:#fff}
+.avatar{width:30px;height:30px;border-radius:50%;background:var(--blue);color:#fff;display:inline-flex;
+  align-items:center;justify-content:center;font-weight:700;font-size:13px;flex:none}
+.avatar.admin{background:var(--wa)}
+.username{font-weight:500}
+.role-badge{font-size:11px;background:var(--wa);border-radius:4px;padding:0 6px;color:#fff;letter-spacing:.05em}
+
+/* ---------- 页面条 ---------- */
+.lg-pagebar{background:#fff;border-bottom:1px solid var(--line)}
+.lg-pagebar .inner{max-width:1170px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted)}
+.lg-pagebar b{color:var(--ink);font-size:15px;font-weight:700}
+
+/* ---------- 卡片 / 按钮 / 表格 ---------- */
+.lg-card{background:var(--card);border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,.07);margin-bottom:16px;overflow:hidden}
+.lg-card .pad{padding:16px 20px}
+.lg-btn{font-family:var(--sans);font-size:13.5px;font-weight:500;border:none;border-radius:6px;padding:7px 18px;
+  cursor:pointer;transition:all .15s;line-height:1.5}
+.lg-btn:active{transform:translateY(1px)}
+.lg-btn:disabled{opacity:.55;cursor:not-allowed;transform:none}
+.lg-btn-primary{background:var(--blue);color:#fff}
+.lg-btn-primary:hover:not(:disabled){background:var(--blue-d)}
+.lg-btn-green{background:var(--ac);color:#fff}
+.lg-btn-green:hover:not(:disabled){filter:brightness(1.08)}
+.lg-btn-ghost{background:#fff;border:1px solid #cfd6e0;color:var(--ink)}
+.lg-btn-ghost:hover:not(:disabled){border-color:var(--blue);color:var(--blue)}
+.lg-btn-danger{background:#fff;border:1px solid #f0b9b3;color:var(--wa)}
+.lg-btn-danger:hover:not(:disabled){background:var(--wa-bg)}
+.lg-btn-sm{padding:3px 10px;font-size:12.5px}
+.tbl{width:100%;border-collapse:collapse}
+.tbl th{font-size:12px;letter-spacing:.06em;color:var(--muted);text-align:left;font-weight:500;
+  padding:10px 16px;background:#f7f9fb;border-bottom:1px solid var(--line)}
+.tbl td{padding:10px 16px;border-bottom:1px solid #f0f3f7;font-size:14px}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tbody tr{cursor:default}
+.rowlink{cursor:pointer}
+.rowlink:hover{background:#f5f9fd}
+.tbl .num{font-family:var(--mono);font-size:13px;color:var(--muted)}
+.tbl .num b{color:var(--ink)}
+
+/* 难度色 */
+.dif{font-weight:700;font-size:13.5px}
+.dif.d0{color:var(--d0)} .dif.d1{color:var(--d1)} .dif.d2{color:var(--d2)} .dif.d3{color:var(--d3)}
+.dif.d4{color:var(--d4)} .dif.d5{color:var(--d5)} .dif.d6{color:var(--d6)}
+.tag{display:inline-block;font-size:12px;background:var(--blue-bg);color:var(--blue-d);border-radius:4px;
+  padding:0 8px;margin:2px 4px 2px 0;cursor:default}
+.st-ico{font-family:var(--mono);font-size:16px}
+.st-ico.ok{color:var(--ac);font-weight:700}
+.st-ico.tried{color:var(--tle)}
+.st-ico.none{color:#ccd2dc}
+
+/* 判定 */
+.vd{font-weight:700;font-size:13.5px;white-space:nowrap}
+.vd.AC{color:var(--ac)} .vd.WA{color:var(--wa)} .vd.TLE{color:var(--tle)} .vd.RE{color:var(--re)}
+.score{font-family:var(--mono);font-weight:700;font-size:15px}
+.score.s100{color:var(--ac)} .score.spart{color:var(--tle)} .score.s0{color:var(--wa)}
+
+/* 用户色（洛谷 rating 色） */
+.uc-0{color:#99a2ad}.uc-1{color:#3498db}.uc-2{color:#52c41a}.uc-3{color:#f39c11}.uc-4{color:#fe4c61}.uc-5{color:#9d3dcf}
+.me-row td{background:#eaf4fc !important}
+/* ---------- 题库筛选 ---------- */
+.filter-bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;padding:14px 16px}
+.filter-bar input[type=text],.filter-bar select{border:1px solid #cfd6e0;border-radius:6px;padding:6px 10px;
+  font-size:13.5px;font-family:var(--sans);background:#fff;color:var(--ink)}
+.filter-bar input[type=text]{flex:1;min-width:180px}
+.filter-bar input[type=text]:focus,.filter-bar select:focus{border-color:var(--blue);outline:none}
+.acrate{font-family:var(--mono);font-size:12.5px}
+.acrate.hi{color:var(--ac)} .acrate.mid{color:var(--tle)} .acrate.lo{color:var(--wa)}
+
+/* ---------- 题目页 ---------- */
+.problem-layout{display:grid;grid-template-columns:minmax(0,1fr) 290px;gap:16px;align-items:start}
+.lg-tabs{display:flex;border-bottom:1px solid var(--line);padding:0 12px;background:#fff}
+.lg-tabs a{padding:11px 18px;font-size:14.5px;color:var(--muted);border-bottom:2.5px solid transparent;margin-bottom:-1px}
+.lg-tabs a:hover{color:var(--ink);text-decoration:none}
+.lg-tabs a.active{color:var(--blue);border-bottom-color:var(--blue);font-weight:700}
+.sec-title{font-size:16px;font-weight:700;margin:18px 0 8px;display:flex;align-items:center;gap:8px}
+.sec-title::before{content:"";width:5px;height:18px;background:var(--blue);border-radius:3px;flex:none}
+.stmt{white-space:pre-wrap;font-size:14.5px;color:#333c48}
+.stmt code{font-family:var(--mono);background:#f2f4f8;border-radius:4px;padding:0 5px;font-size:13px}
+.sample{border:1px solid var(--line);border-radius:8px;overflow:hidden;margin:10px 0 16px}
+.sample .head{display:flex;align-items:center;background:#f7f9fb;border-bottom:1px solid var(--line);
+  padding:7px 14px;font-size:12.5px;color:var(--muted)}
+.sample .head .copy{margin-left:auto;border:none;background:transparent;color:var(--blue);cursor:pointer;
+  font-size:12.5px;font-family:var(--sans)}
+.sample .head .copy:hover{color:var(--blue-d)}
+.sample pre{margin:0;padding:12px 14px;font-family:var(--mono);font-size:13px;line-height:1.7;
+  white-space:pre-wrap;word-break:break-all;min-height:44px}
+.side-info .kv{display:flex;justify-content:space-between;padding:7px 0;font-size:13.5px;border-bottom:1px dashed #eef1f5}
+.side-info .kv:last-child{border-bottom:none}
+.side-info .k{color:var(--muted)}
+.side-info .v{font-weight:500;text-align:right}
+
+/* ---------- 编辑器 ---------- */
+.editor-wrap{border:1px solid var(--line);border-radius:8px;overflow:hidden;margin-top:14px}
+.editor-top{display:flex;align-items:center;gap:10px;padding:9px 14px;background:#f7f9fb;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.editor-top .fname{font-family:var(--mono);font-size:12.5px;color:var(--muted)}
+.editor-top .right{margin-left:auto;display:flex;gap:8px}
+.lang-sel{border:1px solid #cfd6e0;border-radius:6px;padding:4px 8px;font-size:13px;font-family:var(--sans)}
+.editor-body{display:flex;background:#21262e;height:420px}
+.gutter{width:46px;flex:none;background:#1b2027;overflow:hidden}
+.gutter-inner{padding:12px 10px 12px 0;text-align:right;color:#4a5568;font-family:var(--mono);
+  font-size:13px;line-height:1.7;white-space:pre}
+.code-input{flex:1;background:transparent;border:none;resize:none;outline:none;color:#e6ebf4;
+  font-family:var(--mono);font-size:13px;line-height:1.7;padding:12px 14px;white-space:pre;overflow:auto;caret-color:#7fc3f2}
+
+/* ---------- 评测结果（洛谷记录风格） ---------- */
+.result-box{display:none;border-top:1px solid var(--line);padding:14px 16px;background:#fbfcfe}
+.result-box.show{display:block}
+.result-main{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-bottom:10px;animation:fadeUp .25s}
+.result-status{font-size:21px;font-weight:700}
+.result-status.AC{color:var(--ac)} .result-status.WA{color:var(--wa)} .result-status.TLE{color:var(--tle)} .result-status.RE{color:var(--re)}
+.score-badge{font-family:var(--mono);font-size:26px;font-weight:700}
+.score-badge.s100{color:var(--ac)} .score-badge.spart{color:var(--tle)} .score-badge.s0{color:var(--wa)}
+.result-meta{font-size:12.5px;color:var(--muted);font-family:var(--mono)}
+.pts{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 4px}
+.pt{width:26px;height:26px;border-radius:6px;display:inline-flex;align-items:center;justify-content:center;
+  font-family:var(--mono);font-size:12px;color:#fff;cursor:default}
+.pt.pass{background:var(--ac)} .pt.fail{background:var(--wa)} .pt.tle{background:var(--tle)} .pt.re{background:var(--re)}
+.pt.running{background:#b8c4d4;animation:pulse .9s infinite}
+@keyframes pulse{50%{opacity:.35}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.diff-line{margin-top:10px}
+.io2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:6px}
+.io2 .box{background:#21262e;color:#e6ebf4;border-radius:8px;padding:10px 13px;font-family:var(--mono);
+  font-size:12.5px;line-height:1.7;white-space:pre-wrap;word-break:break-all;overflow:auto;max-height:190px}
+.io2 .box .lbl{color:#8894a8;font-size:11px;letter-spacing:.12em;display:block;margin-bottom:4px}
+.errbox{background:var(--re-bg);border:1px solid #e2d1f0;color:#6c348a;border-radius:8px;padding:10px 13px;
+  font-family:var(--mono);font-size:12px;white-space:pre-wrap;word-break:break-all;margin-top:10px;max-height:180px;overflow:auto}
+
+/* ---------- 弹窗 ---------- */
+.overlay{position:fixed;inset:0;background:rgba(20,28,40,.5);display:flex;align-items:center;
+  justify-content:center;padding:24px;z-index:60;animation:fadeIn .15s}
+.modal{background:#fff;border-radius:10px;width:100%;max-width:520px;max-height:88vh;overflow:auto;
+  padding:24px 28px;box-shadow:0 18px 50px rgba(0,0,0,.3)}
+.modal.wide{max-width:860px}
+.modal h2{margin:0 0 16px;font-size:18px}
+.modal .close{float:right;background:none;border:none;font-size:22px;line-height:1;cursor:pointer;color:var(--muted);padding:0 2px}
+.modal .close:hover{color:var(--ink)}
+.form-row{margin-bottom:14px}
+.form-row label{display:block;font-size:13px;color:var(--muted);margin-bottom:5px}
+.form-row input[type=text],.form-row input[type=password],.form-row input[type=number],
+.form-row select,.form-row textarea{width:100%;border:1px solid #cfd6e0;border-radius:6px;padding:7px 10px;
+  font-size:13.5px;font-family:var(--sans);background:#fff;color:var(--ink)}
+.form-row textarea{font-family:var(--mono);font-size:12.5px;line-height:1.6;min-height:72px;resize:vertical}
+.form-row input:focus,.form-row select:focus,.form-row textarea:focus{border-color:var(--blue);outline:none}
+.form-grid2{display:grid;grid-template-columns:1fr 1fr;gap:0 14px}
+.form-err{color:var(--wa);font-size:13px;min-height:20px;margin:2px 0 8px}
+.test-item{border:1px solid var(--line);border-radius:8px;padding:10px 12px;margin-bottom:10px;background:#fbfcfe}
+.test-item .ti-head{display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:12.5px;color:var(--muted)}
+.test-item .ti-head .del{margin-left:auto;color:var(--wa);background:none;border:none;cursor:pointer;font-size:12.5px;font-family:var(--sans)}
+.code-view{background:#21262e;color:#e6ebf4;border-radius:8px;padding:14px 16px;font-family:var(--mono);
+  font-size:13px;line-height:1.7;white-space:pre;overflow:auto;max-height:320px;margin:0}
+
+/* ---------- 排行榜 / 空状态 ---------- */
+.rank-no{font-family:var(--mono);font-weight:700}
+.rank-no.r1{color:#d4a017}.rank-no.r2{color:#8a95a3}.rank-no.r3{color:#b06f42}
+.solved-dots{display:flex;gap:4px;flex-wrap:wrap}
+.solved-dots .sd{width:9px;height:9px;border-radius:2px;background:#dde3ec}
+.solved-dots .sd.on{background:var(--ac)}
+.empty{padding:56px 20px;text-align:center;color:var(--muted)}
+.empty .big{font-size:15px;margin-bottom:6px;font-family:var(--mono)}
+
+/* ---------- 首页 / 犇犇 ---------- */
+.home-grid{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:16px;align-items:start}
+.home-banner{background:linear-gradient(120deg,#2f89c5 0%,#41b883 100%);border-radius:10px;
+  color:#fff;padding:26px 28px;margin-bottom:16px;position:relative;overflow:hidden}
+.home-banner h1{font-family:var(--logo);font-size:34px;letter-spacing:3px;margin-bottom:8px}
+.home-banner p{margin:0;opacity:.92;font-size:14.5px}
+.home-banner .hb-stats{display:flex;gap:26px;margin-top:16px}
+.home-banner .hb-stats b{font-size:24px;font-family:var(--mono)}
+.home-banner .hb-stats span{display:block;font-size:12px;opacity:.8}
+.benben-box{padding:14px 16px}
+.benben-input{width:100%;border:1px solid #cfd6e0;border-radius:8px;padding:8px 12px;font-size:13.5px;
+  font-family:var(--sans);resize:vertical;min-height:60px}
+.benben-input:focus{border-color:var(--blue);outline:none}
+.benben-list{max-height:520px;overflow:auto}
+.benben{display:flex;gap:10px;padding:12px 4px;border-bottom:1px dashed #eef1f5}
+.benben:last-child{border-bottom:none}
+.benben .avatar{width:36px;height:36px;font-size:14px}
+.benben .bb-body{flex:1;min-width:0}
+.benben .bb-head{font-size:13px}
+.benben .bb-text{font-size:13.5px;color:#333c48;margin:2px 0 4px;white-space:pre-wrap;word-break:break-word}
+.benben .bb-meta{font-size:12px;color:var(--muted);display:flex;gap:12px;align-items:center}
+.benben .bb-like{background:none;border:none;color:var(--muted);cursor:pointer;font-size:12px;font-family:var(--sans);padding:0}
+.benben .bb-like:hover{color:var(--wa)}
+.benben .bb-like.liked{color:var(--wa)}
+.announce{padding:12px 16px;display:flex;gap:10px;align-items:flex-start;border-bottom:1px dashed #eef1f5}
+.announce:last-child{border-bottom:none}
+.announce .a-dot{width:8px;height:8px;border-radius:50%;background:var(--blue);flex:none;margin-top:8px}
+.announce .a-date{font-size:11.5px;color:var(--muted);font-family:var(--mono)}
+.home-list-item{display:flex;justify-content:space-between;align-items:center;padding:9px 16px;border-bottom:1px dashed #eef1f5;font-size:13.5px}
+.home-list-item:last-child{border-bottom:none}
+.home-list-item .r{color:var(--muted);font-size:12.5px;font-family:var(--mono)}
+
+/* ---------- 讨论区 ---------- */
+.forum-cats{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}
+.forum-cat{border:1px solid var(--line);border-radius:8px;padding:12px 14px;cursor:pointer;transition:all .15s}
+.forum-cat:hover{border-color:var(--blue);box-shadow:0 2px 8px rgba(52,152,219,.12)}
+.forum-cat .fc-icon{font-size:22px}
+.forum-cat .fc-name{font-weight:700;font-size:14px;margin:4px 0 2px}
+.forum-cat .fc-count{font-size:12px;color:var(--muted)}
+.thread-row{display:flex;gap:12px;padding:13px 16px;border-bottom:1px solid #f0f3f7;cursor:pointer;align-items:center}
+.thread-row:hover{background:#f5f9fd}
+.thread-row:last-child{border-bottom:none}
+.thread-row .t-title{font-weight:500;font-size:14px}
+.thread-row .t-meta{font-size:12px;color:var(--muted);margin-top:2px}
+.thread-row .t-stat{text-align:right;font-size:12px;color:var(--muted);font-family:var(--mono);flex:none;width:70px}
+.reply{display:flex;gap:10px;padding:12px 16px;border-bottom:1px dashed #eef1f5}
+.reply:last-child{border-bottom:none}
+.reply .avatar{width:32px;height:32px;font-size:12px}
+.reply .r-body{flex:1;min-width:0}
+.reply .r-text{font-size:13.5px;white-space:pre-wrap;word-break:break-word;color:#333c48;margin-top:2px}
+.reply .r-meta{font-size:11.5px;color:var(--muted)}
+.reply-box{padding:12px 16px;border-top:1px solid var(--line);background:#fbfcfe}
+.reply-box textarea{width:100%;border:1px solid #cfd6e0;border-radius:8px;padding:8px 12px;font-size:13px;
+  font-family:var(--sans);min-height:64px;resize:vertical}
+.reply-box textarea:focus{border-color:var(--blue);outline:none}
+
+/* ---------- 比赛 ---------- */
+.contest-row{display:flex;align-items:center;gap:14px;padding:14px 18px;border-bottom:1px solid #f0f3f7;cursor:pointer}
+.contest-row:hover{background:#f5f9fd}
+.contest-row:last-child{border-bottom:none}
+.ct-badge{flex:none;width:74px;text-align:center;border-radius:6px;color:#fff;font-size:12.5px;padding:5px 0;font-weight:700}
+.ct-badge.running{background:var(--ac)} .ct-badge.soon{background:var(--blue)} .ct-badge.done{background:#95a0b1}
+.ct-title{font-weight:700;font-size:15px}
+.ct-meta{font-size:12.5px;color:var(--muted);font-family:var(--mono);margin-top:2px}
+.ct-rank-row td{font-size:13.5px}
+.standings td{font-size:13.5px}
+
+/* ---------- 题解 ---------- */
+.sol-item{border:1px solid var(--line);border-radius:8px;padding:14px 16px;margin-bottom:12px}
+.sol-item .sol-head{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.sol-item .sol-title{font-weight:700;font-size:15px}
+.sol-item .sol-content{font-size:13.5px;white-space:pre-wrap;color:#333c48}
+.sol-editor textarea{width:100%;border:1px solid #cfd6e0;border-radius:8px;padding:10px 12px;font-size:13px;
+  font-family:var(--sans);min-height:150px;resize:vertical}
+.sol-editor textarea:focus{border-color:var(--blue);outline:none}
+
+/* ---------- 统计 ---------- */
+.stat-bars{padding:6px 0}
+.stat-bar{display:flex;align-items:center;gap:10px;margin:8px 0;font-size:13px}
+.stat-bar .sb-label{width:110px;color:var(--muted);flex:none;text-align:right}
+.stat-bar .sb-track{flex:1;height:16px;background:#f0f3f7;border-radius:8px;overflow:hidden}
+.stat-bar .sb-fill{height:100%;border-radius:8px;transition:width .5s}
+.stat-bar .sb-val{width:60px;font-family:var(--mono);font-size:12.5px;color:var(--muted)}
+
+/* ---------- 用户主页 ---------- */
+.profile-head{display:flex;gap:18px;align-items:center;padding:20px 24px}
+.profile-head .avatar{width:64px;height:64px;font-size:26px}
+.pf-stats{display:flex;gap:0;border-top:1px solid var(--line)}
+.pf-stat{flex:1;text-align:center;padding:12px 0;border-right:1px solid #f0f3f7}
+.pf-stat:last-child{border-right:none}
+.pf-stat b{display:block;font-size:20px;font-family:var(--mono)}
+.pf-stat span{font-size:12px;color:var(--muted)}
+
+/* ---------- 通知 ---------- */
+.bell-wrap{position:relative}
+.bell-btn{background:none;border:none;color:rgba(255,255,255,.85);cursor:pointer;font-size:17px;position:relative;padding:2px 4px}
+.bell-btn:hover{color:#fff}
+.bell-dot{position:absolute;top:-3px;right:-4px;background:var(--wa);color:#fff;font-size:10px;
+  border-radius:9px;min-width:15px;height:15px;display:flex;align-items:center;justify-content:center;padding:0 3px;font-family:var(--mono)}
+.notif-panel{position:absolute;right:0;top:38px;width:300px;background:#fff;border-radius:10px;
+  box-shadow:0 8px 30px rgba(0,0,0,.25);overflow:hidden;z-index:70;animation:fadeUp .18s}
+.notif-panel .np-head{padding:10px 16px;border-bottom:1px solid var(--line);font-weight:700;font-size:13.5px;
+  display:flex;justify-content:space-between;align-items:center;background:#f7f9fb}
+.notif-panel .np-clear{font-size:12px;font-weight:400;color:var(--blue);background:none;border:none;cursor:pointer;font-family:var(--sans)}
+.notif-item{padding:10px 16px;border-bottom:1px solid #f0f3f7;font-size:13px;cursor:pointer}
+.notif-item:hover{background:#f5f9fd}
+.notif-item:last-child{border-bottom:none}
+.notif-item .n-time{display:block;font-size:11px;color:var(--muted);font-family:var(--mono);margin-top:2px}
+.notif-item.unread{background:#eaf4fc}
+.user-menu{position:relative}
+.um-btn{background:none;border:none;color:#fff;cursor:pointer;font-family:var(--sans);display:flex;align-items:center;gap:6px}
+.um-drop{position:absolute;right:0;top:40px;width:150px;background:#fff;border-radius:10px;overflow:hidden;
+  box-shadow:0 8px 30px rgba(0,0,0,.25);z-index:70;animation:fadeUp .18s}
+.um-drop a{display:block;padding:9px 16px;color:var(--ink);font-size:13.5px}
+.um-drop a:hover{background:#f5f9fd;text-decoration:none}
+.um-drop .sep{border-top:1px solid var(--line);margin:4px 0}
+
+@media (max-width:1000px){
+  .home-grid{grid-template-columns:1fr}
+  .forum-cats{grid-template-columns:1fr 1fr}
+  .problem-layout{grid-template-columns:1fr}
+  .lg-logo-sub{display:none}
+  .lg-search{display:none}
+  .lg-header-inner{gap:10px;padding:0 14px;overflow-x:auto}
+  .container{padding:14px 12px 50px}
+  .io2{grid-template-columns:1fr}
+  .form-grid2{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
+</style>
+</head>
+<body>
+<header class="lg-header">
+  <div class="lg-header-inner">
+    <a class="lg-logo" href="#/problems">
+      <span class="lg-logo-mark">谷</span>
+      <span class="lg-logo-text">洛谷</span>
+      <span class="lg-logo-sub">计算机科学教育新生态</span>
+    </a>
+    <nav class="lg-nav" id="nav">
+      <a href="#/" data-nav="home">首页</a>
+      <a href="#/problems" data-nav="problems">题库</a>
+      <a href="#/discuss" data-nav="discuss">讨论</a>
+      <a href="#/contests" data-nav="contests">比赛</a>
+      <a href="#/records" data-nav="records">记录</a>
+      <a href="#/rank" data-nav="rank">排行榜</a>
+      <a href="#/admin" data-nav="admin" id="nav-admin" hidden>管理</a>
+    </nav>
+    <div class="lg-search"><input id="global-search" placeholder="搜索题目 / 题号" aria-label="搜索题目"></div>
+    <div class="lg-user" id="lg-user"></div>
+  </div>
+</header>
+<div class="lg-pagebar" id="pagebar"></div>
+<main id="app"></main>
+<div id="modal-root"></div>
+<script>
+"use strict";
+/* ===================== 数据 ===================== */
+function fib(n){let a=1,b=1;for(let i=3;i<=n;i++){const t=a+b;a=b;b=t}return n<=2?1:b}
+function countPrimes(n){let c=0;for(let i=2;i<=n;i++){let p=true;for(let j=2;j*j<=i;j++)if(i%j===0){p=false;break}if(p)c++}return c}
+function pascal(n){const out=[];let prev=[];for(let i=0;i<n;i++){const cur=[];for(let j=0;j<=i;j++)cur.push(j===0||j===i?1:prev[j-1]+prev[j]);out.push(cur.join(" "));prev=cur}return out.join("\n")}
+
+const DIFFS=["入门","普及-","普及/提高-","普及+/提高","提高+/省选-","省选/NOI-","NOI/NOI+"];
+const STARTER="// 使用 readline() 读取下一行输入，console.log() 输出一行\n";
+
+const BASE_PROBLEMS=[
+{ id:"P1001",title:"A + B Problem",diff:0,timeMs:1000,acRate:97,tags:["模拟","枚举"],
+  desc:"输入两个整数 a 和 b，输出它们的和。\n\n这是洛谷的第一道题，人人都能做对的题。如果这题你不会做，你可以退出 OI 了。",
+  inputDesc:"一行，两个空格分隔的整数 a, b（-10^9 ≤ a, b ≤ 10^9）。",
+  outputDesc:"一行，一个整数，表示 a + b。",
+  tests:[
+    {input:"1 2",output:"3",sample:true},
+    {input:"100 200",output:"300",sample:false},
+    {input:"0 0",output:"0",sample:false},
+    {input:"-5 5",output:"0",sample:false},
+    {input:"999999 1",output:"1000000",sample:false},
+    {input:"12345 6789",output:"19134",sample:false}],
+  starter:'const [a, b] = readline().split(" ").map(Number);\nconsole.log(a + b);\n' },
+{ id:"P1002",title:"斐波那契数列",diff:0,timeMs:1000,acRate:88,tags:["递推","数学"],
+  desc:"数列 F 满足：F(1) = 1，F(2) = 1，F(n) = F(n-1) + F(n-2)。\n\n给定 n，输出 F(n) 的值。",
+  inputDesc:"一行，一个整数 n（1 ≤ n ≤ 40）。",
+  outputDesc:"一行，一个整数，表示 F(n)。",
+  tests:[1,2,10,20,30,40].map((n,i)=>({input:String(n),output:String(fib(n)),sample:i<2})),
+  starter:'const n = Number(readline());\n// TODO: 递推计算 F(n)\n' },
+{ id:"P1003",title:"素数统计",diff:1,timeMs:1000,acRate:76,tags:["素数","枚举","数论"],
+  desc:"给定整数 n，统计 1 ~ n 中素数（质数）的个数。",
+  inputDesc:"一行，一个整数 n（1 ≤ n ≤ 5000）。",
+  outputDesc:"一行，一个整数，表示素数的个数。",
+  tests:[1,2,10,100,1000,5000].map((n,i)=>({input:String(n),output:String(countPrimes(n)),sample:i<2})),
+  starter:'const n = Number(readline());\n// TODO: 统计素数个数\n' },
+{ id:"P1004",title:"回文判断",diff:1,timeMs:1000,acRate:82,tags:["字符串"],
+  desc:"给定一个仅由小写字母组成的字符串，判断它是否为回文串。",
+  inputDesc:"一行，一个字符串 s（1 ≤ |s| ≤ 1000，仅含小写字母）。",
+  outputDesc:"一行，如果是回文串输出 YES，否则输出 NO。",
+  tests:[
+    {input:"level",output:"YES",sample:true},{input:"abc",output:"NO",sample:true},
+    {input:"a",output:"YES",sample:false},{input:"abba",output:"YES",sample:false},
+    {input:"abcba",output:"YES",sample:false},{input:"abab",output:"NO",sample:false},
+    {input:"aaaa",output:"YES",sample:false},{input:"qwojqwoj",output:"NO",sample:false}],
+  starter:'const s = readline();\n// TODO: 判断回文，输出 YES 或 NO\n' },
+{ id:"P1005",title:"最大公约数",diff:1,timeMs:1000,acRate:80,tags:["数学","辗转相除"],
+  desc:"给定两个正整数 a 和 b，求它们的最大公约数 gcd(a, b)。\n\n提示：辗转相除法 gcd(a, b) = gcd(b, a mod b)。",
+  inputDesc:"一行，两个空格分隔的正整数 a, b（1 ≤ a, b ≤ 10^9）。",
+  outputDesc:"一行，一个整数，表示 gcd(a, b)。",
+  tests:[
+    {input:"12 18",output:"6",sample:true},{input:"7 13",output:"1",sample:true},
+    {input:"100 100",output:"100",sample:false},{input:"1071 462",output:"21",sample:false},
+    {input:"1 999999999",output:"1",sample:false},{input:"48 36",output:"12",sample:false}],
+  starter:'const [a, b] = readline().split(" ").map(Number);\n// TODO: 辗转相除求 gcd\n' },
+{ id:"P1006",title:"成绩排序",diff:2,timeMs:1000,acRate:64,tags:["排序"],
+  desc:"有 n 名学生，每人有姓名和成绩。\n\n按成绩从高到低排序；成绩相同时按姓名字典序升序。每行输出一名学生的「姓名 成绩」。",
+  inputDesc:"第一行一个整数 n（1 ≤ n ≤ 1000）。\n接下来 n 行，每行一个姓名（长度 ≤ 20）和一个整数成绩（0 ≤ 成绩 ≤ 100），以空格分隔。",
+  outputDesc:"n 行，每行输出「姓名 成绩」，按题目要求排序。",
+  tests:[
+    {input:"3\nAlice 90\nBob 85\nCindy 92",output:"Cindy 92\nAlice 90\nBob 85",sample:true},
+    {input:"4\nDave 88\nEve 95\nFrank 88\nAmy 95",output:"Amy 95\nEve 95\nDave 88\nFrank 88",sample:true},
+    {input:"1\nZoe 100",output:"Zoe 100",sample:false},
+    {input:"5\nLi 60\nZhao 75\nQian 75\nSun 90\nWang 60",output:"Sun 90\nQian 75\nZhao 75\nLi 60\nWang 60",sample:false}],
+  starter:'const n = Number(readline());\nconst st = [];\nfor (let i = 0; i < n; i++) {\n  const [name, score] = readline().split(" ");\n  st.push({ name, score: Number(score) });\n}\n// TODO: 排序后逐行输出\n' },
+{ id:"P1007",title:"杨辉三角",diff:2,timeMs:1000,acRate:71,tags:["递推"],
+  desc:"给定 n，输出杨辉三角的前 n 行。\n\n第 i 行有 i 个数，两端为 1，其余每个数等于它上方两数之和。同一行内相邻数字用一个空格分隔。",
+  inputDesc:"一行，一个整数 n（1 ≤ n ≤ 25）。",
+  outputDesc:"n 行，第 i 行输出杨辉三角的第 i 行。",
+  tests:[1,3,5,8,15,25].map((n,i)=>({input:String(n),output:pascal(n),sample:i<2})),
+  starter:'const n = Number(readline());\n// TODO: 输出前 n 行杨辉三角\n' },
+{ id:"P1008",title:"最长上升子序列",diff:3,timeMs:1000,acRate:52,tags:["动态规划","LIS"],
+  desc:"给定一个长度为 n 的整数序列，求它的最长严格上升子序列（LIS）的长度。",
+  inputDesc:"第一行一个整数 n（1 ≤ n ≤ 2000）。\n第二行 n 个空格分隔的整数 a_i（-10^9 ≤ a_i ≤ 10^9）。",
+  outputDesc:"一行，一个整数，表示最长严格上升子序列的长度。",
+  tests:[
+    {input:"5\n1 3 2 4 5",output:"4",sample:true},
+    {input:"8\n10 9 2 5 3 7 101 18",output:"4",sample:true},
+    {input:"5\n5 4 3 2 1",output:"1",sample:false},
+    {input:"1\n7",output:"1",sample:false},
+    {input:"3\n2 2 2",output:"1",sample:false},
+    {input:"8\n1 2 3 4 4 5 6 7",output:"7",sample:false}],
+  starter:'const n = Number(readline());\nconst a = readline().split(" ").map(Number);\n// TODO: 求最长严格上升子序列长度\n' }
+];
+
+const RANK_SEEDS=[
+  {name:"wind_slicer",rating:2431,solved:["P1001","P1002","P1003","P1004","P1005","P1006","P1007"]},
+  {name:"tql_yyds",rating:2190,solved:["P1001","P1002","P1003","P1004","P1005","P1006"]},
+  {name:"dp_god",rating:2102,solved:["P1001","P1002","P1005","P1006","P1007","P1008"]},
+  {name:"segment_tree",rating:1985,solved:["P1001","P1002","P1003","P1006","P1008"]},
+  {name:"brute_force",rating:1560,solved:["P1001","P1002","P1004"]},
+  {name:"hello_world",rating:1320,solved:["P1001","P1004"]},
+  {name:"wa_king",rating:1199,solved:["P1001"]},
+  {name:"tourist_fan",rating:1150,solved:["P1002"]}
+];
+function ratingClass(r){return r>=2400?"uc-5":r>=2100?"uc-4":r>=1900?"uc-3":r>=1600?"uc-2":r>=1200?"uc-1":"uc-0"}
+const NOW=Date.now(),DAY=86400000;
+
+/* 社区种子数据 */
+const SEED_ANNOUNCEMENTS=[
+  {id:1,ts:NOW-2*DAY,title:"欢迎来到本站！洛谷全功能演示版上线",body:"支持题库、评测、讨论、比赛、犇犇、用户主页与站长管理后台。所有数据保存在你的浏览器本地。"},
+  {id:2,ts:NOW-1*DAY,title:"JavaScript 沙箱评测说明",body:"提交的代码在浏览器 Worker 沙箱中运行，采用洛谷部分分制，每组测试点独立计分。"}
+];
+const SEED_BENBENS=[
+  {id:1,user:"wa_king",ts:NOW-3600000*2,text:"今天终于把 A+B Problem 做对了，庆祝一下！",likes:3,likedBy:[]},
+  {id:2,user:"dp_god",ts:NOW-3600000*5,text:"LIS 的 O(n log n) 做法真的好优雅，不过这题 n≤2000 貌似 O(n²) 就够了",likes:7,likedBy:[]},
+  {id:3,user:"wind_slicer",ts:NOW-3600000*9,text:"建议站长出一道线段树模板题，保证没人 WA（bushi",likes:12,likedBy:[]}
+];
+const FORUM_CATS=[
+  {key:"official",icon:"📢",name:"站务版",desc:"公告与站务讨论"},
+  {key:"tech",icon:"💻",name:"学术版",desc:"算法与数据结构交流"},
+  {key:"help",icon:"🆘",name:"求助版",desc:"不会做的题来问"},
+  {key:"water",icon:"🌊",name:"灌水区",desc:"闲聊灌水"}
+];
+const SEED_THREADS=[
+  {id:1,cat:"tech",title:"分享一种 O(n log n) 求 LIS 的做法",user:"dp_god",ts:NOW-DAY,
+   body:"维护一个数组 d，d[len] 表示长度为 len 的上升子序列末尾最小值。\n每来一个数，二分找到第一个 >= 它的位置替换（或追加）。\n最终 len 即为 LIS 长度。\n\nP1008 用这个做法可以在 10ms 内通过。",
+   replies:[{user:"wind_slicer",ts:NOW-DAY+3600000,body:"写得很清楚，sbl！"},{user:"brute_force",ts:NOW-DAY+7200000,body:"原来二分就行，我还在写 O(n²)"}]},
+  {id:2,cat:"help",title:"P1003 素数统计，为什么只过了 3 个点？",user:"wa_king",ts:NOW-3600000*6,
+   body:"我写了个从 2 到 n 每个数试除的算法，只拿了 50 分。\nn=5000 应该不算大吧？求大佬看看哪里写错了。",
+   replies:[{user:"segment_tree",ts:NOW-3600000*5,body:"试除到 sqrt(i) 就够了，别除到 i，不然 n=5000 也要跑很久。"}]},
+  {id:3,cat:"water",title:"有人一起打周赛吗",user:"hello_world",ts:NOW-3600000*3,
+   body:"组队水经验，来了扣 1。",replies:[{user:"tourist_fan",ts:NOW-3600000*2,body:"1"}]}
+];
+const SEED_SOLUTIONS={
+  P1001:[{id:1,user:"wind_slicer",ts:NOW-3*DAY,title:"读入拆分即可",
+    body:"把一行按空格 split 成两个数字，相加输出。\n\nconst [a, b] = readline().split(\" \").map(Number);\nconsole.log(a + b);"}],
+  P1002:[{id:2,user:"dp_god",ts:NOW-2*DAY,title:"递推做法",
+    body:"f[1] = f[2] = 1，f[i] = f[i-1] + f[i-2]，循环递推即可，注意不要用朴素递归（会 TLE）。"}],
+  P1008:[{id:3,user:"dp_god",ts:NOW-DAY,title:"O(n²) 动态规划",
+    body:"dp[i] 表示以 a[i] 结尾的 LIS 长度，dp[i] = max(dp[j]+1)（j<i 且 a[j]<a[i]），答案取 max。\nn ≤ 2000 完全够用。"}]
+};
+const SEED_CONTESTS=[
+  {id:1,title:"新手入门赛 · 第 1 场",start:NOW+DAY,end:NOW+DAY+7200000,dur:"2 小时",
+   desc:"面向新手的入门赛事，考察基础语法与简单算法。比赛结束后可自由查看题解。",
+   problems:["P1001","P1002","P1004"],joined:false},
+  {id:2,title:"算法周赛 · 递推与 DP 专题",start:NOW-DAY-7200000,end:NOW-DAY,dur:"2 小时",
+   desc:"考察递推、动态规划与简单数论。难度对标普及组。",
+   problems:["P1002","P1005","P1006","P1007","P1008"],joined:true,
+   standings:[{user:"wind_slicer",score:300},{user:"dp_god",score:300},{user:"segment_tree",score:200},{user:"tql_yyds",score:200},{user:"brute_force",score:100}]},
+  {id:3,title:"洛谷月赛 · 秋季赛（演示）",start:NOW+3*DAY,end:NOW+3*DAY+10800000,dur:"3 小时",
+   desc:"面向全体用户的大型月赛，难度覆盖入门到提高+。前 10 名可获得勋章奖励。",
+   problems:["P1003","P1006","P1007","P1008"],joined:false}
+];
+/* ===================== 存储 / 登录 ===================== */
+const LS={subs:"lg_subs",solved:"lg_solved",draft:"lg_draft_",custom:"lg_custom",deleted:"lg_deleted",session:"lg_session"};
+function lsLoad(k,f){try{const v=JSON.parse(localStorage.getItem(k));return v==null?f:v}catch(e){return f}}
+function lsSave(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+
+/* 题目 = 内置 + 站长自建（可编辑/删除），合并逻辑 */
+let customProblems=lsLoad(LS.custom,[]);        // 站长新建或改过的题目
+let deletedIds=lsLoad(LS.deleted,[]);           // 被删除的题目 id
+let PROBLEMS=(()=>{
+  const map=new Map(BASE_PROBLEMS.map(p=>[p.id,p]));
+  customProblems.forEach(p=>map.set(p.id,p));
+  deletedIds.forEach(id=>map.delete(id));
+  return [...map.values()].sort((a,b)=>a.id<b.id?-1:1);
+})();
+let PMAP=Object.fromEntries(PROBLEMS.map(p=>[p.id,p]));
+function persistProblems(){
+  lsSave(LS.custom,customProblems);lsSave(LS.deleted,deletedIds);
+  const map=new Map(BASE_PROBLEMS.map(p=>[p.id,p]));
+  customProblems.forEach(p=>map.set(p.id,p));
+  deletedIds.forEach(id=>map.delete(id));
+  PROBLEMS=[...map.values()].sort((a,b)=>a.id<b.id?-1:1);
+  PMAP=Object.fromEntries(PROBLEMS.map(p=>[p.id,p]));
+}
+
+/* 用户（站长 admin） */
+const USERS={admin:{pass:"zgy141019",nick:"admin",role:"admin"}};
+let session=lsLoad(LS.session,null);
+function curUser(){return session&&USERS[session]?USERS[session]:null}
+function renderUser(){
+  const box=$("#lg-user");
+  const u=curUser();
+  if(u){
+    const unread=notifs.filter(n=>!n.read).length;
+    box.innerHTML=`
+      <div class="bell-wrap">
+        <button class="bell-btn" id="bell-btn" aria-label="通知">🔔${unread?`<span class="bell-dot">${unread}</span>`:""}</button>
+        <div id="bell-panel"></div>
+      </div>
+      <div class="user-menu">
+        <button class="um-btn" id="um-btn"><span class="avatar ${u.role==="admin"?"admin":""}" style="width:26px;height:26px;font-size:12px">${esc(session[0].toUpperCase())}</span>${esc(u.nick)}</button>
+        <div id="um-drop"></div>
+      </div>`;
+    $("#nav-admin").hidden=u.role!=="admin";
+    $("#bell-btn").addEventListener("click",e=>{e.stopPropagation();toggleBell()});
+    $("#um-btn").addEventListener("click",e=>{e.stopPropagation();toggleUm()});
+  }else{
+    box.innerHTML=`<button class="btn-login" id="btn-login">登录</button>`;
+    $("#nav-admin").hidden=true;
+    $("#btn-login").addEventListener("click",()=>openLogin());
+  }
+}
+function toggleBell(){
+  const p=$("#bell-panel"),d=$("#um-drop");
+  d.innerHTML="";
+  if(p.innerHTML){p.innerHTML="";return}
+  p.innerHTML=`<div class="notif-panel">
+    <div class="np-head">通知<button class="np-clear" id="np-clear">全部已读</button></div>
+    ${notifs.length?notifs.map(n=>`<div class="notif-item ${n.read?"":"unread"}">
+      ${esc(n.text)}<span class="n-time">${fmtTime(n.ts)}</span></div>`).join("")
+      :`<div style="padding:26px 16px;text-align:center;color:var(--muted);font-size:13px">[ 没有新通知 ]</div>`}
+  </div>`;
+  $("#np-clear").addEventListener("click",()=>{notifs.forEach(n=>n.read=true);lsSave("lg_notifs",notifs);renderUser();p.innerHTML=""});
+}
+function toggleUm(){
+  const d=$("#um-drop"),p=$("#bell-panel");
+  p.innerHTML="";
+  if(d.innerHTML){d.innerHTML="";return}
+  d.innerHTML=`<div class="um-drop">
+    <a href="#/user/${encodeURIComponent(session)}">我的主页</a>
+    <a href="#/records">我的评测记录</a>
+    ${curUser().role==="admin"?'<div class="sep"></div><a href="#/admin">管理后台</a>':""}
+    <div class="sep"></div><a href="#" id="um-logout">退出登录</a></div>`;
+  $("#um-logout").addEventListener("click",e=>{e.preventDefault();d.innerHTML="";session=null;lsSave(LS.session,null);renderUser();route()});
+}
+document.addEventListener("click",()=>{
+  const p=document.querySelector("#bell-panel"),d=document.querySelector("#um-drop");
+  if(p)p.innerHTML="";if(d)d.innerHTML="";
+});
+function openLogin(msg){
+  openModal(`<h2>登录<button class="close" aria-label="关闭">×</button></h2>
+    ${msg?`<div class="form-err" style="margin-top:-8px">${esc(msg)}</div>`:""}
+    <div class="form-row"><label>用户名</label><input type="text" id="login-user" autocomplete="username" placeholder="用户名"></div>
+    <div class="form-row"><label>密码</label><input type="password" id="login-pass" autocomplete="current-password" placeholder="密码"></div>
+    <div class="form-err" id="login-err"></div>
+    <button class="lg-btn lg-btn-primary" id="login-go" style="width:100%;padding:9px">登录</button>`);
+  const go=()=>{
+    const u=$("#login-user").value.trim(),p=$("#login-pass").value;
+    if(USERS[u]&&USERS[u].pass===p){
+      session=u;lsSave(LS.session,u);closeModal();renderUser();route();
+    }else{
+      $("#login-err").textContent="用户名或密码错误，请重试。";
+    }
+  };
+  $("#login-go").addEventListener("click",go);
+  $("#modal-root").addEventListener("keydown",e=>{if(e.key==="Enter")go()});
+  $("#login-user").focus();
+}
+
+let subs=lsLoad(LS.subs,[]);          // {id,ts,user,pid,verdict,score,time,points:[{st,time}],total,code}
+let solved=lsLoad(LS.solved,{});
+/* 社区数据（种子 + 本地持久化） */
+let threads=lsLoad("lg_threads",null);
+if(!threads){threads=JSON.parse(JSON.stringify(SEED_THREADS));lsSave("lg_threads",threads)}
+let solutions=lsLoad("lg_solutions",null);
+if(!solutions){solutions=JSON.parse(JSON.stringify(SEED_SOLUTIONS));lsSave("lg_solutions",solutions)}
+let benbens=lsLoad("lg_benbens",null);
+if(!benbens){benbens=JSON.parse(JSON.stringify(SEED_BENBENS));lsSave("lg_benbens",benbens)}
+let contests=lsLoad("lg_contests",null);
+if(!contests){contests=JSON.parse(JSON.stringify(SEED_CONTESTS));lsSave("lg_contests",contests)}
+let announcements=lsLoad("lg_ann",null);
+if(!announcements){announcements=JSON.parse(JSON.stringify(SEED_ANNOUNCEMENTS));lsSave("lg_ann",announcements)}
+let notifs=lsLoad("lg_notifs",[]);
+function pushNotif(text){notifs.unshift({id:Date.now()+Math.random(),ts:Date.now(),text,read:false});
+  notifs=notifs.slice(0,30);lsSave("lg_notifs",notifs);renderUser()}
+function markSolved(pid){if(!solved[pid]){solved[pid]=true;lsSave(LS.solved,solved);pushNotif(`恭喜通过 ${pid}！获得 100 分。`)}}
+function addSub(rec){subs.unshift(rec);if(subs.length>200)subs.length=200;lsSave(LS.subs,subs)}
+function attempted(pids){const s=new Set();subs.forEach(x=>{if(pids.includes(x.pid))s.add(x.pid)});return s}
+/* ===================== 评测引擎（Worker 沙箱 + 洛谷部分分制） ===================== */
+const WORKER_SRC='self.onmessage=function(e){var lines=String(e.data.input).split("\\n");var i=0;var out=[];'
+ +'self.readline=function(){return i<lines.length?lines[i++]:null};'
+ +'var push=function(){out.push(Array.prototype.slice.call(arguments).join(" "))};'
+ +'console.log=push;console.info=push;console.warn=push;console.error=push;'
+ +'var err=null;try{(0,eval)(e.data.code)}catch(ex){err=(ex&&ex.stack)?String(ex.stack):String(ex)}'
+ +'self.postMessage({out:out.join("\\n"),err:err})};';
+let WORKER_URL=null;
+function getWorkerUrl(){if(!WORKER_URL)WORKER_URL=URL.createObjectURL(new Blob([WORKER_SRC],{type:"text/javascript"}));return WORKER_URL}
+function normOut(s){return String(s).replace(/\r/g,"").split("\n").map(l=>l.replace(/[ \t]+$/,"")).join("\n").replace(/\n+$/,"").trim()}
+function runTest(code,input,limit){
+  return new Promise(resolve=>{
+    const worker=new Worker(getWorkerUrl());
+    const t0=performance.now();
+    const timer=setTimeout(()=>{worker.terminate();
+      resolve({status:"TLE",out:"",err:"",time:Math.round(performance.now()-t0)})},limit);
+    worker.onmessage=ev=>{
+      clearTimeout(timer);
+      const time=Math.round(performance.now()-t0),d=ev.data;
+      worker.terminate();
+      if(d.err)resolve({status:"RE",out:d.out,err:d.err,time});
+      else resolve({status:"OK",out:d.out,err:"",time});
+    };
+    worker.postMessage({code,input});
+  });
+}
+const VD_TEXT={AC:"Accepted",WA:"Wrong Answer",TLE:"Time Limit Exceeded",RE:"Runtime Error"};
+function scoreClass(s){return s===100?"s100":s>0?"spart":"s0"}
+/* ===================== 通用 ===================== */
+const $=s=>document.querySelector(s);
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function fmtTime(ts){const d=new Date(ts),p=n=>String(n).padStart(2,"0");
+  return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())}`}
+function pagebar(html){$("#pagebar").innerHTML=`<div class="inner">${html}</div>`}
+function vdSpan(v){return `<span class="vd ${v}">${VD_TEXT[v]}</span>`}
+function scoreSpan(s){return `<span class="score ${scoreClass(s)}">${s}</span>`}
+function rateClass(r){return r>=60?"hi":r>=30?"mid":"lo"}
+
+/* ===================== 题库列表 ===================== */
+let listState={q:"",diff:"",tag:""};
+function renderList(){
+  pagebar(`<b>题目列表</b><span>›</span><span>在线评测 · JavaScript</span>`);
+  const allTags=[...new Set(PROBLEMS.flatMap(p=>p.tags))];
+  $("#app").innerHTML=`<div class="container">
+    <div class="lg-card">
+      <div class="filter-bar">
+        <input type="text" id="f-q" placeholder="搜索题号 / 题目名称" value="${esc(listState.q)}">
+        <select id="f-diff"><option value="">全部难度</option>
+          ${DIFFS.map((d,i)=>`<option value="${i}" ${listState.diff===String(i)?"selected":""}>${d}</option>`).join("")}</select>
+        <select id="f-tag"><option value="">全部标签</option>
+          ${allTags.map(t=>`<option ${listState.tag===t?"selected":""}>${t}</option>`).join("")}</select>
+        <button class="lg-btn lg-btn-ghost" id="f-random">🎲 随机跳题</button>
+      </div>
+    </div>
+    <div class="lg-card">
+      <table class="tbl"><thead><tr>
+        <th style="width:48px">状态</th><th style="width:80px">题号</th><th>题目名称</th>
+        <th style="width:110px">难度</th><th style="width:220px">标签</th><th style="width:80px">通过率</th>
+      </tr></thead><tbody id="prob-tbody"></tbody></table>
+    </div>
+  </div>`;
+  const draw=()=>{
+    const q=listState.q.toLowerCase(),df=listState.diff,tg=listState.tag;
+    const tried=attempted(PROBLEMS.map(p=>p.id));
+    const rows=PROBLEMS.filter(p=>
+      (!q||p.id.toLowerCase().includes(q)||p.title.toLowerCase().includes(q))&&
+      (df===""||String(p.diff)===df)&&(!tg||p.tags.includes(tg)));
+    $("#prob-tbody").innerHTML=rows.length?rows.map(p=>{
+      const mark=solved[p.id]?'<span class="st-ico ok">✓</span>'
+        :(tried.has(p.id)?'<span class="st-ico tried">●</span>':'<span class="st-ico none">·</span>');
+      return `<tr class="rowlink" data-pid="${p.id}">
+        <td>${mark}</td>
+        <td class="num"><b>${p.id}</b></td>
+        <td><a href="#/problem/${p.id}" class="ptitle">${esc(p.title)}</a></td>
+        <td><span class="dif d${p.diff}">${DIFFS[p.diff]}</span></td>
+        <td>${p.tags.map(t=>`<span class="tag">${t}</span>`).join("")}</td>
+        <td><span class="acrate ${rateClass(p.acRate)}">${p.acRate}%</span></td></tr>`;
+    }).join(""):`<tr><td colspan="6"><div class="empty"><div class="big">[ 没有符合条件的题目 ]</div>换个关键词或筛选条件试试</div></td></tr>`;
+    document.querySelectorAll("#prob-tbody tr[data-pid]").forEach(tr=>
+      tr.addEventListener("click",e=>{if(e.target.tagName!=="A")location.hash="#/problem/"+tr.dataset.pid}));
+  };
+  $("#f-q").addEventListener("input",e=>{listState.q=e.target.value;draw()});
+  $("#f-diff").addEventListener("change",e=>{listState.diff=e.target.value;draw()});
+  $("#f-tag").addEventListener("change",e=>{listState.tag=e.target.value;draw()});
+  $("#f-random").addEventListener("click",()=>{
+    if(!PROBLEMS.length)return;
+    location.hash="#/problem/"+PROBLEMS[Math.floor(Math.random()*PROBLEMS.length)].id;
+  });
+  draw();
+}
+/* ===================== 题目页 ===================== */
+let probTab="stmt";
+function renderProblem(pid,tab){
+  const p=PMAP[pid];
+  if(!p){location.hash="#/problems";return}
+  probTab=tab||"stmt";
+  const samples=p.tests.filter(t=>t.sample);
+  const tl=(p.timeMs/1000).toFixed(2)+"s";
+  pagebar(`<b>${p.id}</b><span>›</span><span>${esc(p.title)}</span>`);
+  $("#app").innerHTML=`<div class="container">
+    <div class="problem-layout">
+      <div>
+        <div class="lg-card">
+          <div class="lg-tabs">
+            <a href="#/problem/${pid}/stmt" class="${probTab==="stmt"?"active":""}">题目描述</a>
+            <a href="#/problem/${pid}/submit" class="${probTab==="submit"?"active":""}">提交代码</a>
+            <a href="#/problem/${pid}/records" class="${probTab==="records"?"active":""}">我的记录</a>
+            <a href="#/problem/${pid}/solutions" class="${probTab==="solutions"?"active":""}">题解</a>
+            <a href="#/problem/${pid}/discuss" class="${probTab==="discuss"?"active":""}">讨论 <span style="font-size:11px;color:var(--muted)">${threads.filter(t=>t.pid===pid).length}</span></a>
+            <a href="#/problem/${pid}/stats" class="${probTab==="stats"?"active":""}">统计</a>
+          </div>
+          <div class="pad" id="tab-body"></div>
+        </div>
+      </div>
+      <div>
+        <div class="lg-card pad side-info">
+          <h3 style="font-size:15px;margin-bottom:10px">题目信息</h3>
+          <div class="kv"><span class="k">时间限制</span><span class="v mono">${tl}</span></div>
+          <div class="kv"><span class="k">内存限制</span><span class="v mono">128.00MB</span></div>
+          <div class="kv"><span class="k">难度</span><span class="v"><span class="dif d${p.diff}">${DIFFS[p.diff]}</span></span></div>
+          <div class="kv"><span class="k">通过率</span><span class="v"><span class="acrate ${rateClass(p.acRate)}">${p.acRate}%</span></span></div>
+          <div class="kv"><span class="k">测试点</span><span class="v mono">${p.tests.length} 个</span></div>
+          <div class="kv"><span class="k">标签</span><span class="v">${p.tags.map(t=>`<span class="tag">${t}</span>`).join("")}</span></div>
+          <div class="kv"><span class="k">出题人</span><span class="v"><span class="uc-1">admin</span></span></div>
+        </div>
+        <div class="lg-card pad" style="text-align:center">
+          <button class="lg-btn lg-btn-green" id="go-submit" style="width:100%">提交代码</button>
+        </div>
+      </div>
+    </div>
+  </div>`;
+  $("#go-submit").addEventListener("click",()=>{location.hash=`#/problem/${pid}/submit`});
+  if(probTab==="stmt")renderStmt(p,samples);
+  else if(probTab==="submit")renderSubmit(p);
+  else if(probTab==="solutions")renderSolutions(p);
+  else if(probTab==="discuss")renderProblemDiscuss(p);
+  else if(probTab==="stats")renderStats(p);
+  else renderMyRecords(p);
+}
+
+function renderStmt(p,samples){
+  $("#tab-body").innerHTML=`
+    <h1 style="font-size:22px;margin-bottom:6px">${esc(p.title)}</h1>
+    <div class="sec-title">题目描述</div><div class="stmt">${esc(p.desc)}</div>
+    <div class="sec-title">输入格式</div><div class="stmt">${esc(p.inputDesc)}</div>
+    <div class="sec-title">输出格式</div><div class="stmt">${esc(p.outputDesc)}</div>
+    <div class="sec-title">输入输出样例</div>
+    ${samples.length?samples.map((s,i)=>`
+      <div class="sample"><div class="head">样例 ${i+1}
+        <button class="copy" data-copy="${esc(s.input)}">复制</button></div>
+        <pre>${esc(s.input)}</pre>
+        <div class="head">样例 ${i+1} 输出
+          <button class="copy" data-copy="${esc(s.output)}">复制</button></div>
+        <pre>${esc(s.output)}</pre></div>`).join("")
+      :`<div class="stmt" style="color:var(--muted)">（本题无公开样例）</div>`}
+    <div class="sec-title">说明 / 提示</div>
+    <div class="stmt">本题语言为 <code>JavaScript</code>：用 <code>readline()</code> 读取下一行输入，用 <code>console.log()</code> 输出一行。代码在浏览器沙箱中评测，采用洛谷部分分制：每组测试点独立计分。</div>`;
+  document.querySelectorAll(".copy").forEach(b=>b.addEventListener("click",()=>{
+    navigator.clipboard&&navigator.clipboard.writeText(b.dataset.copy);
+    const old=b.textContent;b.textContent="已复制";setTimeout(()=>b.textContent=old,1200);
+  }));
+}
+
+/* ---- 提交代码 tab ---- */
+function renderSubmit(p){
+  const draft=lsLoad(LS.draft+p.id,null);
+  $("#tab-body").innerHTML=`
+    <div class="editor-wrap" style="margin-top:0">
+      <div class="editor-top">
+        <span>语言：</span>
+        <select class="lang-sel" id="lang-sel"><option>JavaScript (浏览器沙箱)</option></select>
+        <span class="fname">main.js</span>
+        <div class="right">
+          <button class="lg-btn lg-btn-ghost lg-btn-sm" id="btn-run-sample">运行样例</button>
+          <button class="lg-btn lg-btn-primary lg-btn-sm" id="btn-submit">提交评测</button>
+        </div>
+      </div>
+      <div class="editor-body">
+        <div class="gutter"><div class="gutter-inner" id="gutter"></div></div>
+        <textarea class="code-input" id="code" spellcheck="false" autocomplete="off"></textarea>
+      </div>
+      <div class="result-box" id="result-box"></div>
+    </div>`;
+  const ta=$("#code"),gutter=$("#gutter");
+  ta.value=draft!=null?draft:(p.starter||STARTER);
+  const refreshGutter=()=>{
+    gutter.textContent=Array.from({length:ta.value.split("\n").length},(_,i)=>i+1).join("\n");
+  };
+  refreshGutter();
+  ta.addEventListener("input",refreshGutter);
+  ta.addEventListener("scroll",()=>{gutter.style.transform=`translateY(${-ta.scrollTop}px)`});
+  ta.addEventListener("keydown",e=>{
+    if(e.key==="Tab"){e.preventDefault();const s=ta.selectionStart,en=ta.selectionEnd;
+      ta.value=ta.value.slice(0,s)+"  "+ta.value.slice(en);ta.selectionStart=ta.selectionEnd=s+2;refreshGutter();}
+    else if(e.key==="Enter"&&(e.ctrlKey||e.metaKey)){e.preventDefault();doSubmit(p)}
+  });
+  ta.addEventListener("input",()=>lsSave(LS.draft+p.id,ta.value));
+  $("#btn-run-sample").addEventListener("click",()=>runSample(p));
+  $("#btn-submit").addEventListener("click",()=>doSubmit(p));
+}
+
+async function runSample(p){
+  const s=p.tests.find(t=>t.sample)||p.tests[0];
+  const box=$("#result-box");
+  box.classList.add("show");
+  setBtns(false);
+  box.innerHTML=`<div class="result-main"><span class="result-status" style="font-size:16px;color:var(--muted)">运行样例中…</span></div>`;
+  const r=await runTest($("#code").value,s.input,5000);
+  setBtns(true);
+  if(r.status==="RE"){
+    box.innerHTML=`<div class="result-main"><span class="result-status RE">Runtime Error</span></div>
+      <div class="errbox">${esc(r.err.slice(0,600))}</div>`;return;
+  }
+  if(r.status==="TLE"){
+    box.innerHTML=`<div class="result-main"><span class="result-status TLE">Time Limit Exceeded</span>
+      <span class="result-meta">样例运行超过 5s</span></div>`;return;
+  }
+  const ok=normOut(r.out)===normOut(s.output);
+  box.innerHTML=`<div class="result-main">
+      <span class="result-status ${ok?"AC":"WA"}">${ok?"样例通过":"样例不通过"}</span>
+      <span class="result-meta">耗时 ${r.time} ms</span></div>
+    <div class="io2">
+      <div class="box"><span class="lbl">你的输出</span>${esc(normOut(r.out))||"（空）"}</div>
+      <div class="box"><span class="lbl">期望输出</span>${esc(s.output)}</div></div>`;
+}
+function setBtns(on){
+  const a=$("#btn-submit"),b=$("#btn-run-sample");
+  if(a){a.disabled=!on;if(on)a.textContent="提交评测"}
+  if(b)b.disabled=!on;
+}
+
+/* ---- 正式评测：全部测试点 + 部分分 ---- */
+async function doSubmit(p){
+  if(!curUser()){openLogin("登录后才能提交评测（试试站长账号）");return}
+  const code=$("#code").value;
+  if(!code.trim())return;
+  lsSave(LS.draft+p.id,code);
+  const box=$("#result-box");
+  box.classList.add("show");
+  setBtns(false);
+  $("#btn-submit").textContent="评测中…";
+  box.innerHTML=`<div class="result-main"><span class="result-status" style="font-size:16px;color:var(--muted)">正在评测…</span>
+    <span class="result-meta">共 ${p.tests.length} 个测试点</span></div>
+    <div class="pts">${p.tests.map((_,i)=>`<span class="pt running" id="pt-${i}">${i+1}</span>`).join("")}</div>`;
+  const points=[];let maxTime=0;
+  for(let i=0;i<p.tests.length;i++){
+    const el=$("#pt-"+i);
+    const r=await runTest(code,p.tests[i].input,p.timeMs);
+    let st;
+    if(r.status==="TLE")st="tle";
+    else if(r.status==="RE")st="re";
+    else st=normOut(r.out)===normOut(p.tests[i].output)?"pass":"fail";
+    el.className="pt "+st;
+    el.title=`测试点 #${i+1} · ${st==="pass"?"通过":st==="fail"?"答案错误":st==="tle"?"超时":"运行错误"} · ${r.time} ms`;
+    points.push({st,time:r.time});
+    maxTime=Math.max(maxTime,r.time);
+  }
+  const passN=points.filter(x=>x.st==="pass").length;
+  const score=Math.round(passN/p.tests.length*100);
+  const badIdx=points.findIndex(x=>x.st!=="pass");
+  const verdict=badIdx<0?"AC":(points[badIdx].st==="fail"?"WA":points[badIdx].st==="tle"?"TLE":"RE");
+  let extra="";
+  if(verdict==="WA"){
+    const r=await Promise.resolve({out:box.dataset.out||""}); // 占位不用
+    const i=badIdx;
+    const got=await runTest(code,p.tests[i].input,p.timeMs);
+    extra=`<div class="diff-line"><div class="result-meta">测试点 #${i+1}（${got.time} ms）答案不符：</div>
+      <div class="io2"><div class="box"><span class="lbl">你的输出</span>${esc(normOut(got.out))||"（空）"}</div>
+      <div class="box"><span class="lbl">期望输出</span>${esc(p.tests[i].output)}</div></div></div>`;
+  }else if(verdict==="RE"){
+    const r=await runTest(code,p.tests[badIdx].input,p.timeMs);
+    extra=`<div class="errbox">测试点 #${badIdx+1} 运行错误：\n${esc(r.err.slice(0,600))}</div>`;
+  }else if(verdict==="TLE"){
+    extra=`<div class="result-meta" style="margin-top:8px">测试点 #${badIdx+1} 超过 ${(p.timeMs/1000).toFixed(2)}s 时间限制，程序被强制终止。检查是否存在死循环或低效算法。</div>`;
+  }
+  box.innerHTML=`<div class="result-main">
+      <span class="result-status ${verdict}">${VD_TEXT[verdict]}</span>
+      <span class="score-badge ${scoreClass(score)}">${score} 分</span>
+      <span class="result-meta">得分 ${passN}/${p.tests.length} · 最大耗时 ${maxTime} ms · JavaScript</span>
+    </div>
+    <div class="pts">${points.map((x,i)=>`<span class="pt ${x.st}" title="测试点 #${i+1} · ${x.time} ms">${i+1}</span>`).join("")}</div>
+    ${extra}`;
+  setBtns(true);
+  addSub({id:Date.now(),ts:Date.now(),user:session,pid:p.id,verdict,score,time:maxTime,
+    points:points.map(x=>({st:x.st,time:x.time})),total:p.tests.length,code});
+  if(verdict==="AC")markSolved(p.id);
+}
+
+/* ---- 我的记录 tab ---- */
+function renderMyRecords(p){
+  const list=subs.filter(s=>s.pid===p.id);
+  $("#tab-body").innerHTML=list.length?`
+    <table class="tbl"><thead><tr><th>提交时间</th><th>状态</th><th>得分</th><th>用时</th><th>操作</th></tr></thead>
+    <tbody>${list.map(s=>`<tr>
+      <td class="num">${fmtTime(s.ts)}</td><td>${vdSpan(s.verdict)}</td>
+      <td>${scoreSpan(s.score)}</td><td class="num">${s.time} ms</td>
+      <td><button class="lg-btn lg-btn-ghost lg-btn-sm" data-sid="${s.id}">查看代码</button></td></tr>`).join("")}
+    </tbody></table>`
+    :`<div class="empty"><div class="big">[ 还没有提交记录 ]</div><a href="#/problem/${p.id}/submit">去提交第一份代码</a></div>`;
+  document.querySelectorAll("[data-sid]").forEach(b=>
+    b.addEventListener("click",()=>showSubDetail(Number(b.dataset.sid))));
+}
+
+/* ---- 题解 tab ---- */
+function renderSolutions(p){
+  const list=solutions[p.id]||[];
+  $("#tab-body").innerHTML=`
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+      <b style="font-size:15px">题解（${list.length}）</b>
+      <button class="lg-btn lg-btn-primary lg-btn-sm" id="sol-new" style="margin-left:auto">+ 写题解</button></div>
+    <div id="sol-list">${list.map(s=>{
+      const seed=RANK_SEEDS.find(u=>u.name===s.user);
+      return `<div class="sol-item">
+        <div class="sol-head"><span class="sol-title">${esc(s.title)}</span>
+          <span class="mono ${seed?ratingClass(seed.rating):"uc-1"}" style="font-weight:700;font-size:13px">${esc(s.user)}</span>
+          <span style="font-size:12px;color:var(--muted);font-family:var(--mono)">${fmtTime(s.ts)}</span></div>
+        <div class="sol-content">${esc(s.body)}</div></div>`;
+    }).join("")||`<div class="empty"><div class="big">[ 暂无题解 ]</div>${solved[p.id]||curUser()?"成为第一个写题解的人吧":"通过本题后即可撰写题解"}</div>`}</div>`;
+  $("#sol-new").addEventListener("click",()=>{
+    if(!curUser()){openLogin("登录后才能撰写题解");return}
+    if(!solved[p.id]){alert("请先通过本题再撰写题解～");return}
+    openModal(`<h2>撰写题解 · ${p.id} ${esc(p.title)}<button class="close" aria-label="关闭">×</button></h2>
+      <div class="form-row"><label>标题</label><input type="text" id="sol-title" maxlength="50" placeholder="如：O(n²) 动态规划做法"></div>
+      <div class="form-row sol-editor"><label>正文（支持多行）</label><textarea id="sol-body" placeholder="思路、做法、复杂度分析…"></textarea></div>
+      <div class="form-err" id="sol-err"></div>
+      <button class="lg-btn lg-btn-primary" id="sol-go" style="width:100%;padding:9px">发布题解</button>`);
+    $("#sol-go").addEventListener("click",()=>{
+      const t=$("#sol-title").value.trim(),b=$("#sol-body").value.trim();
+      if(!t)return $("#sol-err").textContent="请填写标题";
+      if(!b)return $("#sol-err").textContent="请填写正文";
+      if(!solutions[p.id])solutions[p.id]=[];
+      solutions[p.id].unshift({id:Date.now(),user:session,ts:Date.now(),title:t,body:b});
+      lsSave("lg_solutions",solutions);
+      closeModal();renderSolutions(p);
+    });
+  });
+}
+
+/* ---- 题目讨论 tab ---- */
+function renderProblemDiscuss(p){
+  const list=threads.filter(t=>t.pid===p.id);
+  $("#tab-body").innerHTML=`
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+      <b style="font-size:15px">本题讨论（${list.length}）</b>
+      <button class="lg-btn lg-btn-primary lg-btn-sm" id="pth-new" style="margin-left:auto">+ 发起讨论</button></div>
+    ${list.length?list.map(t=>`<div class="thread-row" data-th="${t.id}" style="border:1px solid var(--line);border-radius:8px;margin-bottom:8px">
+      <div style="flex:1;min-width:0">
+        <div class="t-title">${esc(t.title)}</div>
+        <div class="t-meta"><span class="mono" style="font-weight:700">${esc(t.user)}</span> · ${fmtTime(t.ts)} · ${t.replies.length} 回复</div>
+      </div></div>`).join("")
+      :`<div class="empty"><div class="big">[ 本题暂无讨论 ]</div>遇到问题？发起讨论求助吧</div>`}`;
+  $("#pth-new").addEventListener("click",()=>{
+    if(!curUser()){openLogin("登录后才能发起讨论");return}
+    openModal(`<h2>发起讨论 · ${p.id}<button class="close" aria-label="关闭">×</button></h2>
+      <div class="form-row"><label>标题</label><input type="text" id="pth-title" maxlength="60"></div>
+      <div class="form-row"><label>正文</label><textarea id="pth-body" style="min-height:110px"></textarea></div>
+      <div class="form-err" id="pth-err"></div>
+      <button class="lg-btn lg-btn-primary" id="pth-go" style="width:100%;padding:9px">发布</button>`);
+    $("#pth-go").addEventListener("click",()=>{
+      const t=$("#pth-title").value.trim(),b=$("#pth-body").value.trim();
+      if(!t)return $("#pth-err").textContent="请填写标题";
+      if(!b)return $("#pth-err").textContent="请填写正文";
+      threads.unshift({id:Date.now(),cat:"help",pid:p.id,title:t,user:session,ts:Date.now(),body,replies:[]});
+      lsSave("lg_threads",threads);
+      closeModal();renderProblemDiscuss(p);
+    });
+  });
+  document.querySelectorAll("[data-th]").forEach(el=>
+    el.addEventListener("click",()=>renderThread(Number(el.dataset.th))));
+}
+
+/* ---- 统计 tab ---- */
+function renderStats(p){
+  const mySubs=subs.filter(s=>s.pid===p.id);
+  const acN=mySubs.filter(s=>s.verdict==="AC").length;
+  const waN=mySubs.filter(s=>s.verdict==="WA").length;
+  const tleN=mySubs.filter(s=>s.verdict==="TLE").length;
+  const reN=mySubs.filter(s=>s.verdict==="RE").length;
+  const total=mySubs.length;
+  const pct=(n)=>total?Math.round(n/total*100):0;
+  const bar=(label,n,color)=>`<div class="stat-bar"><span class="sb-label">${label}</span>
+    <div class="sb-track"><div class="sb-fill" style="width:${pct(n)}%;background:${color}"></div></div>
+    <span class="sb-val">${n} · ${pct(n)}%</span></div>`;
+  $("#tab-body").innerHTML=`
+    <b style="font-size:15px">本题统计</b>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;margin:14px 0 18px">
+      <div class="pf-stat" style="border:1px solid var(--line);border-radius:8px"><b>${p.acRate}%</b><span>全站通过率</span></div>
+      <div class="pf-stat" style="border:1px solid var(--line);border-radius:8px"><b>${p.tests.length}</b><span>测试点数量</span></div>
+      <div class="pf-stat" style="border:1px solid var(--line);border-radius:8px"><b>${(p.timeMs/1000).toFixed(2)}s</b><span>时间限制</span></div>
+      <div class="pf-stat" style="border:1px solid var(--line);border-radius:8px"><b>${total}</b><span>你的提交数</span></div>
+    </div>
+    ${total?`<b style="font-size:15px">你的提交结果分布</b>
+      <div class="stat-bars">
+        ${bar("Accepted",acN,"var(--ac)")}
+        ${bar("Wrong Answer",waN,"var(--wa)")}
+        ${bar("Time Limit",tleN,"var(--tle)")}
+        ${bar("Runtime Error",reN,"var(--re)")}
+      </div>`
+      :`<div class="empty"><div class="big">[ 你还没有提交过本题 ]</div><a href="#/problem/${p.id}/submit">提交第一份代码</a> 后即可看到统计</div>`}`;
+}
+/* ===================== 提交记录 ===================== */
+function renderRecords(){
+  pagebar(`<b>评测记录</b><span>›</span><span>全部提交</span>`);
+  const body=subs.length?subs.map(s=>{
+    const p=PMAP[s.pid]||{title:s.pid};
+    return `<tr class="rowlink" data-sid="${s.id}">
+      <td class="num">#${s.id}</td>
+      <td>${vdSpan(s.verdict)}</td>
+      <td>${scoreSpan(s.score)}</td>
+      <td><a href="#/problem/${s.pid}">${s.pid}</a> ${esc(p.title)}</td>
+      <td class="num">JavaScript</td>
+      <td class="num">${fmtTime(s.ts)}</td></tr>`;
+  }).join(""):`<tr><td colspan="6"><div class="empty"><div class="big">[ 暂无评测记录 ]</div>
+    <a href="#/problems">去题库</a> 挑一道题开始吧</div></td></tr>`;
+  $("#app").innerHTML=`<div class="container">
+    <div class="lg-card"><table class="tbl">
+      <thead><tr><th style="width:120px">记录 ID</th><th style="width:170px">状态</th><th style="width:70px">得分</th>
+        <th>题目</th><th style="width:110px">语言</th><th style="width:170px">提交时间</th></tr></thead>
+      <tbody>${body}</tbody></table></div></div>`;
+  document.querySelectorAll("tr[data-sid]").forEach(tr=>
+    tr.addEventListener("click",()=>showSubDetail(Number(tr.dataset.sid))));
+}
+function showSubDetail(sid){
+  const s=subs.find(x=>x.id===sid);if(!s)return;
+  const p=PMAP[s.pid]||{title:s.pid};
+  openModal(`<h2>${vdSpan(s.verdict)} <span style="font-size:14px;color:var(--muted);font-weight:400">${s.pid} · ${esc(p.title)}</span>
+      <button class="close" aria-label="关闭">×</button></h2>
+    <div class="kv" style="font-size:13px;color:var(--muted);font-family:var(--mono);margin-bottom:10px">
+      得分 ${scoreSpan(s.score)} · ${s.user||"未登录"} · JavaScript · ${s.time} ms · ${fmtTime(s.ts)}</div>
+    ${s.points?`<div class="pts" style="margin-bottom:12px">${s.points.map((x,i)=>
+      `<span class="pt ${x.st}" title="测试点 #${i+1} · ${x.time} ms">${i+1}</span>`).join("")}</div>`:""}
+    <pre class="code-view">${esc(s.code)}</pre>`,true);
+}
+
+/* ===================== 排行榜 ===================== */
+function renderRank(){
+  pagebar(`<b>排行榜</b><span>›</span><span>按通过题数排序</span>`);
+  const rows=[...RANK_SEEDS.map(u=>({...u,me:false})),
+    {name:(curUser()||{}).nick||"未登录用户",rating:null,solved:Object.keys(solved),me:true}];
+  rows.sort((a,b)=>b.solved.length-a.solved.length||((b.rating||0)-(a.rating||0)));
+  $("#app").innerHTML=`<div class="container">
+    <div class="lg-card"><table class="tbl">
+      <thead><tr><th style="width:70px">排名</th><th>用户</th><th style="width:90px">通过题数</th>
+        <th style="width:200px">解题面板</th><th style="width:90px">Rating</th></tr></thead>
+      <tbody>${rows.map((u,i)=>`<tr class="${u.me?"me-row":""}">
+        <td><span class="rank-no ${i<3?"r"+(i+1):""}">${i+1}</span></td>
+        <td><span class="mono ${u.rating?ratingClass(u.rating):"uc-1"}" style="font-weight:700">${esc(u.name)}${u.me?"（你）":""}</span></td>
+        <td class="mono" style="font-weight:700;color:var(--ac)">${u.solved.length}</td>
+        <td><div class="solved-dots">${PROBLEMS.map(p=>
+          `<span class="sd ${u.solved.includes(p.id)?"on":""}" title="${p.id} ${esc(p.title)}"></span>`).join("")}</div></td>
+        <td class="mono">${u.rating?`<span class="${ratingClass(u.rating)}">${u.rating}</span>`:"—"}</td></tr>`).join("")}
+      </tbody></table></div></div>`;
+}
+/* ===================== 首页 ===================== */
+function contestState(c){
+  const now=Date.now();
+  if(now<c.start)return"soon";
+  if(now<=c.end)return"running";
+  return"done";
+}
+function fmtDate(ts){const d=new Date(ts),p=n=>String(n).padStart(2,"0");
+  return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}`}
+function renderHome(){
+  pagebar(`<b>首页</b>`);
+  const mySolved=Object.keys(solved).length;
+  const rec=PROBLEMS.filter(p=>!solved[p.id]).slice(0,5);
+  $("#app").innerHTML=`<div class="container">
+    <div class="home-banner">
+      <h1>洛谷</h1>
+      <p>计算机科学教育新生态 —— 全功能演示版，数据保存在本地浏览器</p>
+      <div class="hb-stats">
+        <div><b>${PROBLEMS.length}</b><span>题目</span></div>
+        <div><b>${contests.length}</b><span>比赛</span></div>
+        <div><b>${threads.length}</b><span>讨论帖</span></div>
+        <div><b>${mySolved}</b><span>你已通过</span></div>
+      </div>
+    </div>
+    <div class="home-grid">
+      <div>
+        <div class="lg-card">
+          <div class="lg-tabs" style="padding:0 4px"><a class="active" style="cursor:default;color:var(--blue);font-weight:700;border-bottom-color:var(--blue)">犇犇</a></div>
+          <div class="benben-box">
+            ${curUser()?`<textarea class="benben-input" id="bb-input" placeholder="发一条犇犇…"></textarea>
+              <div style="text-align:right;margin-top:8px"><button class="lg-btn lg-btn-primary lg-btn-sm" id="bb-send">发布</button></div>`
+              :`<div style="text-align:center;padding:6px 0 12px;color:var(--muted);font-size:13px">登录后可以发犇犇</div>`}
+            <div class="benben-list" id="bb-list"></div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="lg-card">
+          <div class="pad" style="padding-bottom:4px"><b style="font-size:15px">公告</b></div>
+          ${announcements.map(a=>`<div class="announce"><span class="a-dot"></span>
+            <div><div style="font-size:13.5px;font-weight:500">${esc(a.title)}</div>
+            <div style="font-size:12.5px;color:var(--muted);margin:2px 0">${esc(a.body)}</div>
+            <span class="a-date">${fmtDate(a.ts)}</span></div></div>`).join("")}
+        </div>
+        <div class="lg-card">
+          <div class="pad" style="padding-bottom:4px;display:flex;justify-content:space-between;align-items:center">
+            <b style="font-size:15px">近期比赛</b><a href="#/contests" style="font-size:12.5px">更多 »</a></div>
+          ${contests.slice(0,3).map(c=>`<div class="home-list-item" style="cursor:pointer" data-ct="${c.id}">
+            <span>${contestState(c)==="running"?'<span class="vd AC">● 进行中</span> ':contestState(c)==="soon"?'<span style="color:var(--blue);font-size:12.5px">○ 未开始</span> ':'<span style="color:var(--muted);font-size:12.5px">✓ 已结束</span> '}${esc(c.title)}</span>
+            <span class="r">${fmtDate(c.start)}</span></div>`).join("")}
+        </div>
+        <div class="lg-card">
+          <div class="pad" style="padding-bottom:4px"><b style="font-size:15px">推荐练习</b></div>
+          ${rec.map(p=>`<div class="home-list-item" style="cursor:pointer" data-pp="${p.id}">
+            <span><span class="num" style="margin-right:6px">${p.id}</span>${esc(p.title)}</span>
+            <span class="dif d${p.diff}" style="font-size:12.5px">${DIFFS[p.diff]}</span></div>`).join("")
+            ||`<div class="home-list-item"><span>全部题目已通过，太强了！</span></div>`}
+        </div>
+      </div>
+    </div>
+  </div>`;
+  drawBenbens();
+  if($("#bb-send"))$("#bb-send").addEventListener("click",()=>{
+    const t=$("#bb-input").value.trim();
+    if(!t)return;
+    benbens.unshift({id:Date.now(),user:session,ts:Date.now(),text:t,likes:0,likedBy:[]});
+    lsSave("lg_benbens",benbens);
+    $("#bb-input").value="";
+    drawBenbens();
+  });
+  document.querySelectorAll("[data-ct]").forEach(el=>
+    el.addEventListener("click",()=>{location.hash="#/contest/"+el.dataset.ct}));
+  document.querySelectorAll("[data-pp]").forEach(el=>
+    el.addEventListener("click",()=>{location.hash="#/problem/"+el.dataset.pp}));
+}
+function drawBenbens(){
+  const list=$("#bb-list");if(!list)return;
+  list.innerHTML=benbens.map(b=>{
+    const seed=RANK_SEEDS.find(u=>u.name===b.user);
+    return `<div class="benben">
+      <span class="avatar">${esc(b.user[0].toUpperCase())}</span>
+      <div class="bb-body">
+        <div class="bb-head"><span class="mono ${seed?ratingClass(seed.rating):"uc-1"}" style="font-weight:700">${esc(b.user)}</span></div>
+        <div class="bb-text">${esc(b.text)}</div>
+        <div class="bb-meta"><span>${fmtTime(b.ts)}</span>
+          <button class="bb-like ${b.likedBy.includes(session||"")?"liked":""}" data-like="${b.id}">👍 ${b.likes}</button></div>
+      </div></div>`;
+  }).join("");
+  list.querySelectorAll("[data-like]").forEach(btn=>btn.addEventListener("click",()=>{
+    const b=benbens.find(x=>String(x.id)===btn.dataset.like);
+    const me=session||"";
+    const i=b.likedBy.indexOf(me);
+    if(i<0){b.likedBy.push(me);b.likes++;if(me&&b.user!==me)pushNotif(`${me} 赞了你的犇犇`)}
+    else{b.likedBy.splice(i,1);b.likes--}
+    lsSave("lg_benbens",benbens);drawBenbens();
+  }));
+}
+
+/* ===================== 讨论区 ===================== */
+let forumCat=null;
+function renderDiscuss(){
+  pagebar(`<b>讨论</b><span>›</span><span>${forumCat?esc(FORUM_CATS.find(c=>c.key===forumCat).name):"版块列表"}</span>`);
+  if(!forumCat){
+    $("#app").innerHTML=`<div class="container">
+      <div class="lg-card pad" style="display:flex;align-items:center;gap:12px">
+        <b>讨论区</b><span style="color:var(--muted);font-size:13px">共 ${threads.length} 个帖子</span>
+        <button class="lg-btn lg-btn-primary lg-btn-sm" id="new-thread" style="margin-left:auto">+ 发帖</button></div>
+      <div class="lg-card pad"><div class="forum-cats">
+        ${FORUM_CATS.map(c=>`<div class="forum-cat" data-cat="${c.key}">
+          <div class="fc-icon">${c.icon}</div><div class="fc-name">${c.name}</div>
+          <div class="fc-count">${threads.filter(t=>t.cat===c.key).length} 帖 · ${c.desc}</div></div>`).join("")}
+      </div></div></div>`;
+    document.querySelectorAll("[data-cat]").forEach(el=>
+      el.addEventListener("click",()=>{forumCat=el.dataset.cat;renderDiscuss()}));
+    $("#new-thread").addEventListener("click",()=>openNewThread());
+    return;
+  }
+  const catThreads=threads.filter(t=>t.cat===forumCat);
+  $("#app").innerHTML=`<div class="container">
+    <div class="lg-card pad" style="display:flex;align-items:center;gap:12px">
+      <a href="#/discuss" style="font-size:13px">‹ 返回版块列表</a>
+      <b>${esc(FORUM_CATS.find(c=>c.key===forumCat).name)}</b>
+      <button class="lg-btn lg-btn-primary lg-btn-sm" id="new-thread" style="margin-left:auto">+ 发帖</button></div>
+    <div class="lg-card">
+      ${catThreads.length?catThreads.map(t=>`<div class="thread-row" data-th="${t.id}">
+        <div style="flex:1;min-width:0">
+          <div class="t-title">${esc(t.title)}</div>
+          <div class="t-meta"><span class="mono" style="font-weight:700">${esc(t.user)}</span> · ${fmtTime(t.ts)}</div>
+        </div>
+        <div class="t-stat">${t.replies.length} 回复</div></div>`).join("")
+        :`<div class="empty"><div class="big">[ 这个版块还没有帖子 ]</div>来发第一帖吧</div>`}
+    </div></div>`;
+  $("#new-thread").addEventListener("click",()=>openNewThread());
+  document.querySelectorAll("[data-th]").forEach(el=>
+    el.addEventListener("click",()=>renderThread(Number(el.dataset.th))));
+}
+function openNewThread(){
+  if(!curUser()){openLogin("登录后才能发帖");return}
+  openModal(`<h2>发布新帖<button class="close" aria-label="关闭">×</button></h2>
+    <div class="form-row"><label>标题</label><input type="text" id="th-title" maxlength="60"></div>
+    <div class="form-row"><label>版块</label><select id="th-cat">
+      ${FORUM_CATS.map(c=>`<option value="${c.key}" ${forumCat===c.key?"selected":""}>${c.icon} ${c.name}</option>`).join("")}</select></div>
+    <div class="form-row"><label>正文</label><textarea id="th-body" style="min-height:130px"></textarea></div>
+    <div class="form-err" id="th-err"></div>
+    <button class="lg-btn lg-btn-primary" id="th-go" style="width:100%;padding:9px">发布</button>`);
+  $("#th-go").addEventListener("click",()=>{
+    const title=$("#th-title").value.trim(),body=$("#th-body").value.trim();
+    if(!title)return $("#th-err").textContent="请填写标题";
+    if(!body)return $("#th-err").textContent="请填写正文";
+    threads.unshift({id:Date.now(),cat:$("#th-cat").value,title,user:session,ts:Date.now(),body,replies:[]});
+    lsSave("lg_threads",threads);
+    closeModal();renderDiscuss();
+  });
+}
+function renderThread(id){
+  const t=threads.find(x=>x.id===id);
+  if(!t){location.hash="#/discuss";return}
+  const seed=RANK_SEEDS.find(u=>u.name===t.user);
+  pagebar(`<b>讨论</b><span>›</span><b style="font-size:14px">${esc(t.title)}</b>`);
+  $("#app").innerHTML=`<div class="container">
+    <div class="lg-card pad" style="display:flex;align-items:center;gap:12px">
+      <a href="#/discuss" style="font-size:13px">‹ 返回讨论区</a></div>
+    <div class="lg-card">
+      <div class="pad" style="border-bottom:1px solid var(--line)">
+        <h2 style="font-size:18px;margin-bottom:6px">${esc(t.title)}</h2>
+        <div class="t-meta"><span class="mono ${seed?ratingClass(seed.rating):"uc-1"}" style="font-weight:700">${esc(t.user)}</span> · ${fmtTime(t.ts)} · ${FORUM_CATS.find(c=>c.key===t.cat).name}</div>
+        <div class="stmt" style="margin-top:12px">${esc(t.body)}</div>
+      </div>
+      <div id="reply-list">${t.replies.map((r,i)=>{
+        const rs=RANK_SEEDS.find(u=>u.name===r.user);
+        return `<div class="reply"><span class="avatar">${esc(r.user[0].toUpperCase())}</span>
+          <div class="r-body"><div><span class="mono ${rs?ratingClass(rs.rating):"uc-1"}" style="font-weight:700">${esc(r.user)}</span>
+            <span class="r-meta"> · ${fmtTime(r.ts)} · #${i+1}</span></div>
+          <div class="r-text">${esc(r.body)}</div></div></div>`;
+      }).join("")||`<div class="empty" style="padding:30px"><div class="big">[ 暂无回复 ]</div></div>`}</div>
+      <div class="reply-box">
+        ${curUser()?`<textarea id="reply-input" placeholder="回复…"></textarea>
+          <div style="text-align:right;margin-top:8px"><button class="lg-btn lg-btn-primary lg-btn-sm" id="reply-go">回复</button></div>`
+          :`<div style="text-align:center;color:var(--muted);font-size:13px;padding:4px 0">登录后才能回复</div>`}
+      </div>
+    </div></div>`;
+  if($("#reply-go"))$("#reply-go").addEventListener("click",()=>{
+    const v=$("#reply-input").value.trim();
+    if(!v)return;
+    t.replies.push({user:session,ts:Date.now(),body:v});
+    lsSave("lg_threads",threads);renderThread(id);
+  });
+}
+/* ===================== 比赛 ===================== */
+function renderContests(){
+  pagebar(`<b>比赛</b><span>›</span><span>全部比赛</span>`);
+  const groups=[["running","进行中的比赛"],["soon","即将开始"],["done","已经结束"]];
+  $("#app").innerHTML=`<div class="container">`+groups.map(([st,label])=>{
+    const list=contests.filter(c=>contestState(c)===st);
+    if(!list.length)return"";
+    return `<div class="lg-card">
+      <div class="pad" style="padding-bottom:6px"><b style="font-size:15px">${label}</b></div>
+      ${list.map(c=>`<div class="contest-row" data-ct="${c.id}">
+        <span class="ct-badge ${st}">${st==="running"?"进行中":st==="soon"?"未开始":"已结束"}</span>
+        <div style="flex:1;min-width:0">
+          <div class="ct-title">${esc(c.title)}</div>
+          <div class="ct-meta">${fmtDate(c.start)} ~ ${fmtDate(c.end)} · ${c.dur} · ${c.problems.length} 题${c.joined?" · 已报名":""}</div>
+        </div></div>`).join("")}</div>`;
+  }).join("")+`</div>`;
+  document.querySelectorAll("[data-ct]").forEach(el=>
+    el.addEventListener("click",()=>{location.hash="#/contest/"+el.dataset.ct}));
+}
+function renderContest(id){
+  const c=contests.find(x=>x.id===id);
+  if(!c){location.hash="#/contests";return}
+  const st=contestState(c);
+  pagebar(`<b>比赛</b><span>›</span><b style="font-size:14px">${esc(c.title)}</b>`);
+  $("#app").innerHTML=`<div class="container">
+    <div class="lg-card pad">
+      <h2 style="font-size:20px">${esc(c.title)}
+        <span class="ct-badge ${st}" style="float:right;margin-top:4px">${st==="running"?"进行中":st==="soon"?"未开始":"已结束"}</span></h2>
+      <div class="ct-meta" style="margin:8px 0">${fmtDate(c.start)} ~ ${fmtDate(c.end)} · ${c.dur} · 组织者：<span class="mono uc-1" style="font-weight:700">admin</span></div>
+      <div class="stmt">${esc(c.desc)}</div>
+      ${st!=="done"&&!c.joined&&curUser()?`<button class="lg-btn lg-btn-green" id="ct-join" style="margin-top:12px">报名参赛</button>`:""}
+      ${c.joined&&st!=="done"?`<span class="vd AC" style="display:inline-block;margin-top:12px">✓ 已报名</span>`:""}
+      ${!curUser()&&st!=="done"?`<div style="margin-top:12px;color:var(--muted);font-size:13px">登录后可报名参赛</div>`:""}
+    </div>
+    <div class="lg-card">
+      <div class="lg-tabs"><a class="active" style="cursor:default;color:var(--blue);font-weight:700;border-bottom-color:var(--blue)">题目列表</a></div>
+      <table class="tbl"><thead><tr><th style="width:70px">题号</th><th>题目</th><th style="width:110px">难度</th><th style="width:90px">状态</th></tr></thead>
+      <tbody>${c.problems.map(pid=>{
+        const p=PMAP[pid];if(!p)return"";
+        return `<tr class="rowlink" data-pp="${pid}">
+          <td class="num"><b>${pid}</b></td><td>${esc(p.title)}</td>
+          <td><span class="dif d${p.diff}">${DIFFS[p.diff]}</span></td>
+          <td>${solved[pid]?'<span class="st-ico ok">✓</span>':attempted([pid]).has(pid)?'<span class="st-ico tried">●</span>':'<span class="st-ico none">·</span>'}</td></tr>`;
+      }).join("")}</tbody></table>
+    </div>
+    ${st==="done"&&c.standings?`<div class="lg-card">
+      <div class="lg-tabs"><a class="active" style="cursor:default;color:var(--blue);font-weight:700;border-bottom-color:var(--blue)">排行榜</a></div>
+      <table class="tbl standings"><thead><tr><th style="width:70px">排名</th><th>选手</th><th style="width:90px">得分</th></tr></thead>
+      <tbody>${c.standings.map((s,i)=>`<tr class="${s.user===session?"me-row":""}">
+        <td><span class="rank-no ${i<3?"r"+(i+1):""}">${i+1}</span></td>
+        <td><span class="mono" style="font-weight:700">${esc(s.user)}</span></td>
+        <td class="mono" style="font-weight:700">${s.score}</td></tr>`).join("")}
+        ${c.standings.some(s=>s.user===session)?"":`<tr class="me-row"><td><span class="rank-no">${c.standings.length+1}</span></td>
+          <td class="mono" style="font-weight:700">${esc(session||"未登录")}（你）</td>
+          <td class="mono" style="font-weight:700">${c.problems.filter(pid=>solved[pid]).length*100}</td></tr>`}
+      </tbody></table></div>`:""}
+  </div>`;
+  if($("#ct-join"))$("#ct-join").addEventListener("click",()=>{
+    c.joined=true;lsSave("lg_contests",contests);
+    pushNotif(`报名成功：${c.title}`);
+    renderContest(id);
+  });
+  document.querySelectorAll("[data-pp]").forEach(el=>
+    el.addEventListener("click",()=>{location.hash="#/problem/"+el.dataset.pp}));
+}
+
+/* ===================== 用户主页 ===================== */
+function renderProfile(name){
+  const seed=RANK_SEEDS.find(u=>u.name===name);
+  const isMe=name===session;
+  const mySubs=subs.filter(s=>(s.user||"")===name);
+  const mySolved=isMe?Object.keys(solved):((seed&&seed.solved)||[]);
+  const acN=mySubs.filter(s=>s.verdict==="AC").length;
+  pagebar(`<b>用户</b><span>›</span><b style="font-size:14px">${esc(name)}</b>`);
+  $("#app").innerHTML=`<div class="container">
+    <div class="lg-card">
+      <div class="profile-head">
+        <span class="avatar ${name==="admin"?"admin":""}" style="width:64px;height:64px;font-size:26px">${esc(name[0].toUpperCase())}</span>
+        <div>
+          <h2 style="font-size:20px"><span class="mono ${seed?ratingClass(seed.rating):name==="admin"?"uc-1":"uc-0"}">${esc(name)}</span>
+            ${isMe?'<span style="font-size:13px;color:var(--muted);font-weight:400">（你）</span>':""}
+            ${name==="admin"?'<span class="role-badge" style="font-size:12px;padding:2px 8px;vertical-align:middle">站长</span>':""}</h2>
+          <div style="font-size:13px;color:var(--muted);margin-top:4px">
+            ${seed?`Rating <span class="mono ${ratingClass(seed.rating)}" style="font-weight:700">${seed.rating}</span> · `:""}
+            ${name==="admin"?"本站创建者，掌握管理权限":"算法爱好者"}
+          </div>
+        </div>
+      </div>
+      <div class="pf-stats">
+        <div class="pf-stat"><b>${mySolved.length}</b><span>通过题目</span></div>
+        <div class="pf-stat"><b>${isMe?mySubs.length:mySolved.length*2}</b><span>提交次数</span></div>
+        <div class="pf-stat"><b>${isMe&&mySubs.length?Math.round(acN/mySubs.length*100)+"%":"—"}</b><span>AC 率</span></div>
+        <div class="pf-stat"><b>${(seed?seed.solved.length:mySolved.length)*50}</b><span>咕值</span></div>
+      </div>
+    </div>
+    <div class="lg-card">
+      <div class="pad" style="padding-bottom:4px"><b style="font-size:15px">通过的题目</b></div>
+      <div class="pad" style="padding-top:8px">
+        ${mySolved.length?`<div class="solved-dots">${PROBLEMS.map(p=>
+          `<span class="sd ${mySolved.includes(p.id)?"on":""}" title="${p.id} ${esc(p.title)}" style="width:16px;height:16px;border-radius:4px"></span>`).join("")}</div>`
+          :`<div style="color:var(--muted);font-size:13.5px;text-align:center;padding:16px 0">还没有通过任何题目</div>`}
+      </div>
+    </div>
+    ${isMe&&mySubs.length?`<div class="lg-card">
+      <div class="pad" style="padding-bottom:4px"><b style="font-size:15px">最近提交</b></div>
+      <table class="tbl"><tbody>${mySubs.slice(0,5).map(s=>`<tr class="rowlink" data-sid="${s.id}">
+        <td class="num">${s.pid}</td><td>${vdSpan(s.verdict)}</td><td>${scoreSpan(s.score)}</td>
+        <td class="num">${fmtTime(s.ts)}</td></tr>`).join("")}</tbody></table>
+    </div>`:""}
+  </div>`;
+  document.querySelectorAll("[data-sid]").forEach(tr=>
+    tr.addEventListener("click",()=>showSubDetail(Number(tr.dataset.sid))));
+}
+
+function renderAdmin(){
+  const u=curUser();
+  if(!u||u.role!=="admin"){
+    pagebar(`<b>管理后台</b>`);
+    $("#app").innerHTML=`<div class="container"><div class="lg-card"><div class="empty">
+      <div class="big">[ 需要站长权限 ]</div>请使用站长账号登录后访问。</div></div></div>`;
+    if(!u)openLogin("管理后台需要站长权限，请先登录");
+    return;
+  }
+  pagebar(`<b>管理后台</b><span>›</span><span>站点管理</span>`);
+  const deleted=deletedIds.map(id=>({id,base:BASE_PROBLEMS.find(b=>b.id===id)})).filter(x=>x.base);
+  $("#app").innerHTML=`<div class="container">
+    <div class="lg-card pad" style="display:flex;align-items:center;gap:12px">
+      <b>题目管理</b><span style="color:var(--muted);font-size:13px">共 ${PROBLEMS.length} 道题 · ${customProblems.length} 道自建/修改</span>
+      <button class="lg-btn lg-btn-primary lg-btn-sm" id="add-prob" style="margin-left:auto">+ 新建题目</button>
+    </div>
+    <div class="lg-card"><table class="tbl">
+      <thead><tr><th style="width:80px">题号</th><th>标题</th><th style="width:110px">难度</th>
+        <th style="width:80px">测试点</th><th style="width:70px">类型</th><th style="width:150px">操作</th></tr></thead>
+      <tbody>${PROBLEMS.map(p=>{
+        const isCustom=customProblems.some(c=>c.id===p.id);
+        const isEdited=isCustom&&BASE_PROBLEMS.some(b=>b.id===p.id);
+        return `<tr>
+          <td class="num"><b>${p.id}</b></td><td>${esc(p.title)}</td>
+          <td><span class="dif d${p.diff}">${DIFFS[p.diff]}</span></td>
+          <td class="num">${p.tests.length}</td>
+          <td style="font-size:12.5px;color:var(--muted)">${isEdited?"已修改":isCustom?"自建":"内置"}</td>
+          <td><button class="lg-btn lg-btn-ghost lg-btn-sm" data-edit="${p.id}">编辑</button>
+              <button class="lg-btn lg-btn-danger lg-btn-sm" data-del="${p.id}">删除</button></td></tr>`;
+      }).join("")}</tbody></table>
+      ${deleted.length?`<div class="pad" style="border-top:1px solid var(--line);font-size:13px;color:var(--muted)">
+        已删除：${deleted.map(d=>`${d.id} <button class="lg-btn lg-btn-ghost lg-btn-sm" data-restore="${d.id}">恢复</button>`).join(" · ")}</div>`:""}
+    </div>
+    <div class="lg-card pad" style="display:flex;align-items:center;gap:12px">
+      <b>公告管理</b><span style="color:var(--muted);font-size:13px">共 ${announcements.length} 条</span>
+      <button class="lg-btn lg-btn-primary lg-btn-sm" id="add-ann" style="margin-left:auto">+ 发布公告</button>
+    </div>
+    <div class="lg-card">
+      ${announcements.length?announcements.map(a=>`<div class="home-list-item">
+        <span><b style="font-size:13.5px">${esc(a.title)}</b><span style="color:var(--muted);font-size:12.5px;margin-left:8px">${fmtDate(a.ts)}</span></span>
+        <button class="lg-btn lg-btn-danger lg-btn-sm" data-delann="${a.id}">删除</button></div>`).join("")
+        :`<div class="empty" style="padding:24px"><div class="big">[ 暂无公告 ]</div></div>`}
+    </div>
+    <div class="lg-card pad" style="display:flex;align-items:center;gap:12px">
+      <b>讨论管理</b><span style="color:var(--muted);font-size:13px">共 ${threads.length} 帖</span>
+    </div>
+    <div class="lg-card">
+      ${threads.length?threads.map(t=>`<div class="home-list-item">
+        <span style="cursor:pointer" data-th="${t.id}"><b style="font-size:13.5px">${esc(t.title)}</b>
+        <span style="color:var(--muted);font-size:12.5px;margin-left:8px">${esc(t.user)} · ${FORUM_CATS.find(c=>c.key===t.cat).name}</span></span>
+        <button class="lg-btn lg-btn-danger lg-btn-sm" data-delth="${t.id}">删除</button></div>`).join("")
+        :`<div class="empty" style="padding:24px"><div class="big">[ 暂无讨论 ]</div></div>`}
+    </div>
+  </div>`;
+  $("#add-prob").addEventListener("click",()=>openProblemForm(null));
+  $("#add-ann").addEventListener("click",()=>{
+    openModal(`<h2>发布公告<button class="close" aria-label="关闭">×</button></h2>
+      <div class="form-row"><label>标题</label><input type="text" id="ann-title" maxlength="60"></div>
+      <div class="form-row"><label>内容</label><textarea id="ann-body" style="min-height:90px"></textarea></div>
+      <div class="form-err" id="ann-err"></div>
+      <button class="lg-btn lg-btn-primary" id="ann-go" style="width:100%;padding:9px">发布</button>`);
+    $("#ann-go").addEventListener("click",()=>{
+      const t=$("#ann-title").value.trim(),b=$("#ann-body").value.trim();
+      if(!t||!b)return $("#ann-err").textContent="标题和内容都不能为空";
+      announcements.unshift({id:Date.now(),ts:Date.now(),title:t,body:b});
+      lsSave("lg_ann",announcements);closeModal();renderAdmin();
+    });
+  });
+  document.querySelectorAll("[data-delann]").forEach(b=>b.addEventListener("click",()=>{
+    announcements=announcements.filter(a=>String(a.id)!==b.dataset.delann);
+    lsSave("lg_ann",announcements);renderAdmin();
+  }));
+  document.querySelectorAll("[data-th]").forEach(el=>
+    el.addEventListener("click",()=>renderThread(Number(el.dataset.th))));
+  document.querySelectorAll("[data-delth]").forEach(b=>b.addEventListener("click",e=>{
+    e.stopPropagation();
+    threads=threads.filter(t=>String(t.id)!==b.dataset.delth);
+    lsSave("lg_threads",threads);renderAdmin();
+  }));
+  document.querySelectorAll("[data-edit]").forEach(b=>
+    b.addEventListener("click",()=>openProblemForm(PMAP[b.dataset.edit])));
+  document.querySelectorAll("[data-del]").forEach(b=>b.addEventListener("click",()=>{
+    const id=b.dataset.del;
+    if(!confirm(`确定删除题目 ${id} 吗？`))return;
+    customProblems=customProblems.filter(c=>c.id!==id);
+    if(BASE_PROBLEMS.some(x=>x.id===id)&&!deletedIds.includes(id))deletedIds.push(id);
+    persistProblems();renderAdmin();
+  }));
+  document.querySelectorAll("[data-restore]").forEach(b=>b.addEventListener("click",()=>{
+    deletedIds=deletedIds.filter(x=>x!==b.dataset.restore);persistProblems();renderAdmin();
+  }));
+}
+
+function openProblemForm(p){
+  const isNew=!p;
+  const data=isNew?{id:"",title:"",diff:1,timeMs:1000,tags:[],desc:"",inputDesc:"",outputDesc:"",tests:[]}:JSON.parse(JSON.stringify(p));
+  openModal(`<h2>${isNew?"新建题目":"编辑题目 "}${p?p.id:""}
+      <button class="close" aria-label="关闭">×</button></h2>
+    <div class="form-grid2">
+      <div class="form-row"><label>题号（如 P2001）</label><input type="text" id="pf-id" value="${esc(data.id)}" ${isNew?"":"disabled"}></div>
+      <div class="form-row"><label>标题</label><input type="text" id="pf-title" value="${esc(data.title)}"></div>
+      <div class="form-row"><label>难度</label><select id="pf-diff">
+        ${DIFFS.map((d,i)=>`<option value="${i}" ${data.diff===i?"selected":""}>${d}</option>`).join("")}</select></div>
+      <div class="form-row"><label>时间限制（ms）</label><input type="number" id="pf-time" value="${data.timeMs}" min="100" step="100"></div>
+    </div>
+    <div class="form-row"><label>标签（逗号分隔）</label><input type="text" id="pf-tags" value="${esc(data.tags.join(", "))}"></div>
+    <div class="form-row"><label>题目描述</label><textarea id="pf-desc">${esc(data.desc)}</textarea></div>
+    <div class="form-row"><label>输入格式</label><textarea id="pf-in">${esc(data.inputDesc)}</textarea></div>
+    <div class="form-row"><label>输出格式</label><textarea id="pf-out">${esc(data.outputDesc)}</textarea></div>
+    <div class="form-row"><label style="margin-bottom:8px">测试点（勾选「样例」会在题面中展示）
+      <button class="lg-btn lg-btn-ghost lg-btn-sm" id="pf-add-test" style="float:right">+ 添加测试点</button></label>
+      <div id="pf-tests"></div></div>
+    <div class="form-err" id="pf-err"></div>
+    <button class="lg-btn lg-btn-primary" id="pf-save" style="width:100%;padding:9px">保存题目</button>`,true);
+  const testsBox=$("#pf-tests");
+  const drawTests=()=>{
+    testsBox.innerHTML=data.tests.map((t,i)=>`
+      <div class="test-item">
+        <div class="ti-head"><label style="display:flex;align-items:center;gap:5px;margin:0">
+          <input type="checkbox" data-tsample="${i}" ${t.sample?"checked":""}> 作为样例展示</label>
+          <span>测试点 #${i+1}</span>
+          <button class="del" data-tdel="${i}">删除</button></div>
+        <div class="form-grid2">
+          <div class="form-row" style="margin:0"><label>输入</label><textarea data-tin="${i}">${esc(t.input)}</textarea></div>
+          <div class="form-row" style="margin:0"><label>输出</label><textarea data-tout="${i}">${esc(t.output)}</textarea></div>
+        </div></div>`).join("")||`<div style="color:var(--muted);font-size:13px;padding:6px 0">还没有测试点，点击右上角添加</div>`;
+    testsBox.querySelectorAll("[data-tin]").forEach(el=>el.addEventListener("input",()=>data.tests[+el.dataset.tin].input=el.value));
+    testsBox.querySelectorAll("[data-tout]").forEach(el=>el.addEventListener("input",()=>data.tests[+el.dataset.tout].output=el.value));
+    testsBox.querySelectorAll("[data-tsample]").forEach(el=>el.addEventListener("change",()=>data.tests[+el.dataset.tsample].sample=el.checked));
+    testsBox.querySelectorAll("[data-tdel]").forEach(el=>el.addEventListener("click",()=>{data.tests.splice(+el.dataset.tdel,1);drawTests()}));
+  };
+  drawTests();
+  $("#pf-add-test").addEventListener("click",()=>{data.tests.push({input:"",output:"",sample:false});drawTests()});
+  $("#pf-save").addEventListener("click",()=>{
+    const id=$("#pf-id").value.trim().toUpperCase();
+    const title=$("#pf-title").value.trim();
+    const err=$("#pf-err");
+    if(!/^P\d+$/.test(id))return err.textContent="题号格式应为 P + 数字，如 P2001";
+    if(!title)return err.textContent="请填写标题";
+    if(!data.tests.length)return err.textContent="至少需要一个测试点";
+    if(data.tests.some(t=>!t.input||!t.output))return err.textContent="每个测试点的输入和输出都不能为空";
+    if(isNew&&PMAP[id])return err.textContent=`题号 ${id} 已存在`;
+    const prob={id,title,diff:Number($("#pf-diff").value),timeMs:Math.max(100,Number($("#pf-time").value)||1000),
+      tags:$("#pf-tags").value.split(/[,，]/).map(s=>s.trim()).filter(Boolean),
+      acRate:PMAP[id]?PMAP[id].acRate:0,desc:$("#pf-desc").value,
+      inputDesc:$("#pf-in").value,outputDesc:$("#pf-out").value,
+      tests:data.tests.map(t=>({input:t.input,output:t.output,sample:!!t.sample})),
+      starter:PMAP[id]&&PMAP[id].starter?PMAP[id].starter:STARTER};
+    customProblems=customProblems.filter(c=>c.id!==id);
+    customProblems.push(prob);
+    deletedIds=deletedIds.filter(x=>x!==id);
+    persistProblems();closeModal();renderAdmin();
+  });
+}
+/* ===================== 弹窗 / 路由 / 启动 ===================== */
+let escHandler=null;
+function openModal(html,wide){
+  $("#modal-root").innerHTML=`<div class="overlay"><div class="modal ${wide?"wide":""}" role="dialog" aria-modal="true">${html}</div></div>`;
+  const ov=$("#modal-root .overlay");
+  ov.addEventListener("click",e=>{if(e.target===ov)closeModal()});
+  ov.querySelector(".close").addEventListener("click",closeModal);
+  escHandler=e=>{if(e.key==="Escape")closeModal()};
+  document.addEventListener("keydown",escHandler);
+}
+function closeModal(){
+  $("#modal-root").innerHTML="";
+  if(escHandler){document.removeEventListener("keydown",escHandler);escHandler=null}
+}
+function setNav(key){
+  document.querySelectorAll("#nav a").forEach(a=>a.classList.toggle("active",a.dataset.nav===key));
+}
+function route(){
+  closeModal();
+  const h=location.hash||"#/";
+  if(h==="#"||h==="#/"){setNav("home");renderHome();return}
+  const m=h.match(/^#\/problem\/(\w+)(?:\/(\w+))?/);
+  if(m){setNav("problems");renderProblem(m[1],m[2])}
+  else if(h==="#/problems"){setNav("problems");renderList()}
+  else if(h==="#/records"){setNav("records");renderRecords()}
+  else if(h==="#/rank"){setNav("rank");renderRank()}
+  else if(h==="#/discuss"){setNav("discuss");renderDiscuss()}
+  else if(h.startsWith("#/thread/")){setNav("discuss");renderThread(Number(h.split("/")[2]))}
+  else if(h==="#/contests"){setNav("contests");renderContests()}
+  else if(h.startsWith("#/contest/")){setNav("contests");renderContest(Number(h.split("/")[2]))}
+  else if(h.startsWith("#/user/")){setNav("home");renderProfile(decodeURIComponent(h.split("/")[2]||""))}
+  else if(h==="#/admin"){setNav("admin");renderAdmin()}
+  else{setNav("problems");renderList()}
+}
+renderUser();
+route();
+window.addEventListener("hashchange",route);
+$("#global-search").addEventListener("keydown",e=>{
+  if(e.key!=="Enter")return;
+  const q=e.target.value.trim().toLowerCase();
+  if(!q)return;
+  const hit=PROBLEMS.find(p=>p.id.toLowerCase()===q)
+    ||PROBLEMS.find(p=>p.title.toLowerCase().includes(q)||p.id.toLowerCase().includes(q));
+  if(hit){location.hash="#/problem/"+hit.id;e.target.value=""}
+  else{location.hash="#/problems";setTimeout(()=>{listState.q=e.target.value;
+    const el=$("#f-q");if(el){el.value=e.target.value;el.dispatchEvent(new Event("input"))}},50);e.target.value=""}
+});
+</script>
+</body>
+</html>
